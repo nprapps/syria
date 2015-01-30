@@ -1,56 +1,105 @@
 {% extends '_base.html' %}
 
-{% block header_content %}
-<header>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h1>{{ COPY.content.project_name|smarty }}</h1>
-                <h2>{{ COPY.content.lorem_ipsum|smarty }}</h2>
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_head_js %}
+{% endblock extra_head_js %}
+
+{% block extra_head %}
+
+{% endblock extra_head %}
+
+{% block content %}
+<div class="titlecard-wrapper">
+    <div id="top" style="top:0px;position:absolute;" class="waypoint" data-down-waypoint="0,38" data-up-waypoint="0,38"></div>
+    <div id="title-text" class="animated fadeIn">
+        <div class="container">
+            <div class="titlecard-container">
+                <div class="titlecard-content">
+                    <ul class="credit">
+                        <li>
+                            <a href="http://www.npr.org"><img src="assets/img/npr-logo.png" class="npr-logo" alt="NPR" /></a>
+                        </li>
+                        <li>{{ COPY.story_metadata.byline }}</li>
+                    </ul>
+                    <h1>{{ COPY.story_metadata.title }}</h1>
+                    <h2>{{ COPY.story_metadata.subtitle }}</h2>
+
+                    <div class="begin-bar">
+                        <p><strong>Begin</strong></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <div class="titlecard-mask animated fadeOut"></div>
+    <div class="titlecard"></div>
+</div>
+
+<header class="controls headroom" data-headroom>
+    <ul class="section-nav nav">
+        <li class="top-nav active">
+            <a href="#top"><strong>Start</strong> <i class="fa fa-home"></i></a>
+        </li>
+        {% for row in COPY.nav %}
+            <li class="{{ row.key }}-nav">
+                <a href="#{{ row.key }}"><span class="chapter">{{ loop.index }}</span> <strong>{{ row.value }}</strong></a>
+            </li>
+        {% endfor %}
+    </ul>
 </header>
-{% endblock %}
-
-
-{% block content %}
-<h1>{{ COPY.content.project_name }}</h1>
-
-<div id="story-meta">
-    <p class="byline">by <span>{{ COPY.content.byline }}</span></p>
-    <p class="dateblock">
-        <span class="date">{{ COPY.content.pubdate }}</span>
-        <span class="time"> {{ COPY.content.pubtime }}</span>
-    </p>
-</div>
-
-<a class="comment-button comment-button-bubble comment-drawer-toggle" href="javascript:">
-    <span class="comment-count"></span>
-</a>
-
-<a class="comment-button comment-button-article comment-drawer-toggle" data-toggle="modal" data-backdrop="static" data-target="#share-modal">
-    <span class="comment-count"></span>
-    <span class="comment-label">Share / Discuss</span>
-</a>
-
-<h2>Example COPY list</h2>
-<dl>
-    {% for row in COPY.example_list %}
-    <dt>{{ row.term }}</dt><dd>{{ row.definition }}</dd>
-    {% endfor %}
-</dl>
-
-<h2>JST example</h2>
-<p id="template-example"></p>
-{% endblock %}
-
-
-{% block wide_content %}
-<div class="row">
-    <div class="col-md-12">
-        <h2>{{ COPY.content.footer_title }}</h2>
-        <p>{{ COPY.content.lorem_ipsum }}</p>
+<section id="content">
+    <div class="titlecard-caption caption-text">
+        <h6>{{ COPY.story_metadata.titlecard_caption }}</h6>
     </div>
-</div>
+
+        {% for row in COPY.content %}
+
+            {% if row.template == 'chapter' %}
+                {% if row.first_chapter != 'yes' %}
+                    </section>
+                {% endif %}
+            {% endif %}
+            {% include "%s.html"|format(row.template) ignore missing %}
+
+        {% endfor %}
+    <!-- close the last section of the story -->
+    </section>
+
+    <div class="share-wrapper">
+        <div class="share btn btn-default" data-toggle="modal" data-backdrop="static" data-target="#share-modal">
+            <strong>Share And Discuss</strong> <i class="fa fa-share"></i>
+        </div>
+    </div>
+</section>
+
+<!-- content -->
+<div class="story-footer">
+    <div class="container">
+            <div class="story-wrapper">
+<!--                 <div class="story-image">
+                     <img src="{{ COPY.story_metadata.series_img }}" alt="{{ COPY.story_metadata.series_hed }}" class="promo-thumb">
+                </div> -->
+                <div class="story-text noimg">
+                     <h3>{{ COPY.story_metadata.series_hed }}</h3>
+                     <p>{{ COPY.story_metadata.series_desc }}</p>
+                </div>
+            </div>
+            <div class="story-wrapper">
+                <div class="story-text noimg">
+
+                    <div class="credits">
+                        <h6>{{ COPY.story_metadata.credits_hed }}</h6>
+                        {{ COPY.story_metadata.credits_text }}
+                        <p><em>{{ COPY.story_metadata.pubdate }}</em></p>
+                    </div>
+
+                </div><!--/col-->
+            </div><!--/story-wrapper-->
+    </div><!--/container-->
+</div><!--/audio-story -->
+
+{% endblock content %}
+{% block extra_foot_js %}
 {% endblock %}

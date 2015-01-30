@@ -1,0 +1,16 @@
+</div> <!-- end container -->
+
+<div class="edge-to-edge captioned">
+    <img src="assets/img/transparent_1500.png" data-src="assets/img/{{ row.photo }}" alt="{{ row.photo_caption|smarty }}" class="img-responsive waypoint">
+
+    {% if row.photo_caption %}
+        <div class="caption-text">
+            <h6>{{ row.photo_caption|smarty }}</h6>
+        </div>
+        <p class="caption-label"><i class="fa fa-plus-circle"></i> <b>Caption</b></p>
+    {% endif %}
+
+    <h2>{{ row.edge_title }}</h2>
+</div>
+
+<div class="container"> <!-- open new container -->
