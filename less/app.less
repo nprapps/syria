@@ -324,34 +324,13 @@ a:hover, a:active {
         .no-cssanimations & {display: none;}
     }
 
-/*
-    .titlecard-first {
-        position: absolute;
-        z-index: 2;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        .opacity(.2);
-        background-color: #000;
-        background: url('@{img-root}/jpac/bud-family.jpg') no-repeat 0 0;
-        .background-size(cover);
-        .animation-name(titleFade);
-        &.animated{
-            .animation-duration(6s);
-        }
-
-        .ie9 & {display: none;}
-    }
-*/
-
     .titlecard {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: url('@{img-root}/nola_01.jpg') no-repeat 0% 50%;
+        background: url('@{img-root}/pulitzerctr_npr008.jpg') no-repeat 0% 50%;
         .background-size(cover);
 
         @media @screen-small {
@@ -683,7 +662,7 @@ a:hover, a:active {
 
     // inset photo
 
-    .inset-wrapper {
+    /*.inset-wrapper {
         .make-row();
 
         margin: 60px 0 60px 0;
@@ -700,7 +679,7 @@ a:hover, a:active {
                 margin-top: 0;
             }
         }
-    }
+    }*/
 
     // 2x1
     .side-by-side-wrapper {
@@ -1540,3 +1519,27 @@ footer {
             }
     }
 }
+
+// Testing!!!
+#content {
+    p, h1, h2, h3, h4, h5, h6, .inset-wrapper {
+        max-width: 730px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .full-grid-wrapper {
+        max-width: 1140px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    h2 {
+      font-size: 16px;
+    }
+}
+

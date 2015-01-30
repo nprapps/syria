@@ -1,4 +1,5 @@
 {% extends '_base.html' %}
+{% import '_macros.html' as photo %}
 
 {% block extra_css %}
 {% endblock extra_css %}
@@ -37,6 +38,7 @@
     <div class="titlecard"></div>
 </div>
 
+{#
 <header class="controls headroom" data-headroom>
     <ul class="section-nav nav">
         <li class="top-nav active">
@@ -49,29 +51,10 @@
         {% endfor %}
     </ul>
 </header>
+#}
+
 <section id="content">
-    <div class="titlecard-caption caption-text">
-        <h6>{{ COPY.story_metadata.titlecard_caption }}</h6>
-    </div>
-
-        {% for row in COPY.content %}
-
-            {% if row.template == 'chapter' %}
-                {% if row.first_chapter != 'yes' %}
-                    </section>
-                {% endif %}
-            {% endif %}
-            {% include "%s.html"|format(row.template) ignore missing %}
-
-        {% endfor %}
-    <!-- close the last section of the story -->
-    </section>
-
-    <div class="share-wrapper">
-        <div class="share btn btn-default" data-toggle="modal" data-backdrop="static" data-target="#share-modal">
-            <strong>Share And Discuss</strong> <i class="fa fa-share"></i>
-        </div>
-    </div>
+    {{ render_file('copy.md')|markdown|smarty }}
 </section>
 
 <!-- content -->
