@@ -1,0 +1,28 @@
+{% macro inset(filename, caption=None) %}
+<div class="inset-wrapper">
+    <div class="inset captioned">
+            <img src="assets/img/transparent_1500.png" data-src="assets/img/{{ filename }}" alt="{{ caption|smarty }}" class="img-responsive">
+            {% if caption %}
+            <div class="caption-text">
+                <h6>{{ caption|smarty }}</h6>
+            </div>
+            <p class="caption-label"><i class="fa fa-plus-circle"></i> <b>Caption</b></p>
+            {% endif %}
+    </div>
+</div>
+{% endmacro %}
+
+{% macro full_grid(filename, caption=None) %}
+<div class="full-grid-wrapper">
+    <div class="full-grid captioned">
+            <img src="assets/img/transparent_1500.png" data-src="assets/img/{{ filename }}" alt="{{ caption|smarty }}" class="img-responsive">
+            {% if caption %}
+                <div class="caption-text">
+                    <h6>{{ caption|smarty }}</h6>
+                </div>
+                <p class="caption-label"><i class="fa fa-plus-circle"></i> <b>Caption</b></p>
+            {% endif %}
+    </div>
+</div>
+{% endmacro %}
+
