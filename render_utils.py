@@ -8,7 +8,6 @@ import urllib
 
 from cssmin import cssmin
 from flask import Markup, g, render_template, request
-from jinja2 import contextfunction, Environment, FileSystemLoader
 from markdown import markdown
 from slimit import minify
 from smartypants import smartypants
@@ -168,15 +167,6 @@ def flatten_app_config():
 
     return config
 
-@contextfunction
-def render_file(context, path):
-    """
-    Render a file with the current context
-    """
-    env = Environment(loader=FileSystemLoader('www/assets'))
-    template = env.get_template(path)
-    return template.render(**context)
-
 def make_context(asset_depth=0):
     """
     Create a base-context for rendering views.
@@ -191,7 +181,6 @@ def make_context(asset_depth=0):
     context['COPY'] = copytext.Copy(app_config.COPY_PATH)
     context['JS'] = JavascriptIncluder(asset_depth=asset_depth)
     context['CSS'] = CSSIncluder(asset_depth=asset_depth)
-    context['render_file'] = render_file
 
     return context
 

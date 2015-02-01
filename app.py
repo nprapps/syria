@@ -6,6 +6,7 @@ import os
 import static
 
 from flask import Flask, make_response, render_template
+from jinja2 import contextfunction, Environment, FileSystemLoader
 from render_utils import make_context, smarty_filter, urlencode_filter, markdown_filter
 from werkzeug.debug import DebuggedApplication
 
@@ -15,6 +16,7 @@ app.debug = app_config.DEBUG
 app.add_template_filter(smarty_filter, name='smarty')
 app.add_template_filter(urlencode_filter, name='urlencode')
 app.add_template_filter(markdown_filter, name='markdown')
+
 
 # Example application views
 @app.route('/')
@@ -49,6 +51,39 @@ def test_widget():
     Example page displaying widget at different embed sizes.
     """
     return make_response(render_template('test_widget.html', **make_context()))
+
+@contextfunction
+def render_file(context, path):
+    """
+    Render a file with the current context
+    """
+    env = Environment(loader=FileSystemLoader('www/assets'))
+    template = env.get_template(path)
+    return template.render(**context)
+
+@contextfunction
+def photos(context, id):
+    """
+    Render one or more photos defined in the spreadsheet.
+    """
+    return "hi"
+
+def note(text):
+    """
+    Return a note.
+    """
+    return render_template('_note.html', note=text)
+
+@app.context_processor
+def context_processor():
+    """
+    Add our app's functions
+    """
+    context = {}
+    context['render_file'] = render_file
+    context['photos'] = photos
+    context['note'] = note
+    return context
 
 app.register_blueprint(static.static)
 
