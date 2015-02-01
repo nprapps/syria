@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
+import app_config
 import json
+import os
+import static
 
 from flask import Flask, make_response, render_template
-from werkzeug.debug import DebuggedApplication
-
-import app_config
 from render_utils import make_context, smarty_filter, urlencode_filter, markdown_filter
-import static
+from werkzeug.debug import DebuggedApplication
 
 app = Flask(__name__)
 app.debug = app_config.DEBUG
@@ -60,4 +60,17 @@ else:
 
 # Catch attempts to run the app directly
 if __name__ == '__main__':
-    print 'This command has been removed! Please run "fab app" instead!'
+    if not os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
+        print 'This command has been deprecated! Please run "fab app" instead!'
+
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--port')
+    args = parser.parse_args()
+    server_port = 8000
+
+    if args.port:
+        server_port = int(args.port)
+
+    app.run(host='0.0.0.0', port=server_port, debug=app_config.DEBUG)
