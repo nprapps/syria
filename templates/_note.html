@@ -1,4 +1,6 @@
+{% if DEPLOYMENT_TARGET == None %}
 <div class="note">
     <h2>Note</h2>
     {{ note|markdown }}
 </div>
+{% endif %}
