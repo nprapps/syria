@@ -26,3 +26,41 @@
 </div>
 {% endmacro %}
 
+
+{% macro side_by_side(filename1, caption1=None, filename2, caption2=None) %}
+<div class="side-by-side-wrapper waypoint">
+    <div class="side-by-side captioned">
+            <div class="">
+                <img src="assets/img/transparent_1500.png" data-src="assets/img/{{ row.photo }}" alt="{{ row.photo_caption|smarty }}" class="img-responsive">
+                <!-- <div class="option"><i class="fa fa-search-plus"></i></div> -->
+            </div><!--/enlarge-->
+            {% if row.photo_caption %}
+                <div class="caption-text">
+                    <h6>{{ row.photo_caption|smarty }}</h6>
+                </div>
+                <p class="caption-label"><i class="fa fa-plus-circle"></i> <b>Caption</b></p>
+            {% endif %}
+
+    </div>
+    <div class="side-by-side captioned">
+            <div class="">
+                 <img src="assets/img/transparent_1500.png" data-src="assets/img/{{ row.photo_2 }}" alt="{{ row.photo_2_caption|smarty }}" class="img-responsive">
+                <!-- <div class="option"><i class="fa fa-search-plus"></i></div> -->
+            </div><!--/enlarge-->
+           {% if row.photo_2_caption %}
+               <div class="caption-text">
+                   <h6>{{ row.photo_2_caption|smarty }}</h6>
+               </div>
+               <p class="caption-label"><i class="fa fa-plus-circle"></i> <b>Caption</b></p>
+           {% endif %}
+    </div>
+</div>
+
+{% if row.metacaption %}
+    <div class="metacaption">
+        <div class="caption-text">
+            <h6>{{ row.metacaption|smarty }}</h6>
+        </div>
+    </div>
+{% endif %}
+{% endmacro %}
