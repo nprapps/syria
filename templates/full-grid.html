@@ -1,13 +1,13 @@
-<div class="full-grid-wrapper">
+<div class="full-grid-wrapper{% if row.class %} {{ class }}{% endif %}">
     <div class="full-grid captioned">
-            <div class="">
-                <img src="assets/img/transparent_1500.png" data-src="assets/img/{{ row.photo }}" alt="{{ row.photo_caption|smarty }}" class="img-responsive">
-            </div>
-            {% if row.photo_caption %}
-                <div class="caption-text">
-                    <h6>{{ row.photo_caption|smarty }}</h6>
-                </div>
-                <p class="caption-label"><i class="fa fa-plus-circle"></i> <b>Caption</b></p>
-            {% endif %}
+        <div class="">
+            <img src="assets/img/transparent_1500.png" data-src="assets/img/{{ row.photo }}" alt="{{ row.photo_caption|smarty }}" class="img-responsive">
+        </div>
+        {% if row.photo_caption %}
+        <div class="caption-text">
+            <h6>{{ row.photo_caption|smarty }}</h6>
+        </div>
+        <p class="caption-label"><i class="fa fa-plus-circle"></i> <b>Caption</b></p>
+        {% endif %}
     </div>
 </div>

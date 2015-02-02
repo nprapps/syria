@@ -1522,20 +1522,39 @@ footer {
 
 // Testing!!!
 #content {
-    p, h1, h2, h3, h4, h5, h6, .inset-wrapper {
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      max-width: 700px;
+      padding-left: 20px;
+      padding-right: 20px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+
+
+    .full-grid-wrapper,
+    .side-by-side-wrapper,
+    .metacaption
+    {
         max-width: 730px;
         padding-left: 20px;
         padding-right: 20px;
         margin-left: auto;
         margin-right: auto;
-    }
 
-    .full-grid-wrapper {
-        max-width: 1140px;
-        padding-left: 20px;
-        padding-right: 20px;
-        margin-left: auto;
-        margin-right: auto;
+        &.wide {
+            max-width: 1140px;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 
     h2 {
