@@ -26,8 +26,8 @@ def index():
     """
     Example view demonstrating rendering a simple HTML page.
     """
-    context = make_context()
     update_google_doc()
+    context = make_context()
 
     with open('data/featured.json') as f:
         context['featured'] = json.load(f)
