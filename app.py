@@ -3,9 +3,11 @@
 import app_config
 import json
 import os
+import re
 import static
 
-from flask import Flask, make_response, render_template
+from fabfile.text import update as update_google_doc
+from flask import Flask, Markup, make_response, render_template
 from jinja2 import contextfunction, Environment, FileSystemLoader
 from render_utils import make_context, smarty_filter, urlencode_filter, markdown_filter
 from werkzeug.debug import DebuggedApplication
@@ -25,6 +27,7 @@ def index():
     Example view demonstrating rendering a simple HTML page.
     """
     context = make_context()
+    update_google_doc()
 
     with open('data/featured.json') as f:
         context['featured'] = json.load(f)
@@ -62,11 +65,20 @@ def render_file(context, path):
     return template.render(**context)
 
 @contextfunction
-def photos(context, id):
+def photos(context, group):
     """
     Render one or more photos defined in the spreadsheet.
     """
-    return "hi"
+    photoset = [photo for photo in context['COPY']['photos'] if photo['group'] == group]
+    whitespace_regex = re.compile(r'\s+') # Remove whitespace for Markdown embedding
+    fragments = []
+    for row in photoset:
+        template = '%s.html' % row['template']
+        output = render_template(template, row=row)
+        output = whitespace_regex.sub(' ', output)
+        fragments.append(output)
+
+    return Markup("".join(fragments))
 
 def note(text):
     """
