@@ -147,30 +147,7 @@ var on_nav_click = function(){
     * Click handler for navigation element clicks.
     */
     var hash = $(this).attr('href').replace('#', '');
-
-
-    // If the chapter has an edge_to_edge, offset the smoothScroll
-
-    var edge_to_edge = $('#' + hash).children('.edge-to-edge');
-    var has_edge_to_edge;
-
-    if (edge_to_edge.length > 0) {
-        has_edge_to_edge = true;
-    }
-    else {
-        has_edge_to_edge = false;
-    }
-
-    var edge_to_edge_margin = parseInt($(edge_to_edge).css('margin-top'));
-    console.log(edge_to_edge_margin);
-
-    if (has_edge_to_edge == true) {
-        $.smoothScroll({ offset: edge_to_edge_margin, speed: 800, scrollTarget: '#' + hash });
-    }
-    else {
-        $.smoothScroll({ speed: 800, scrollTarget: '#' + hash });
-    }
-
+    $.smoothScroll({ speed: 800, scrollTarget: '#' + hash });
     _gaq.push(['_trackEvent', APP_CONFIG.PROJECT_SLUG, 'navigation', 'clicked chapter nav link']);
 
     return false;
