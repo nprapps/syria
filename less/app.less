@@ -1511,14 +1511,27 @@ footer {
     }
 
     & > h1 {
+        font-size: 42px;
         font-weight: bold;
         margin-top: 50px;
+        margin-bottom: 0;
         a {
             display: block;
             position: relative;
             top: -50px;
             visibility: hidden;
         }
+        @media @screen-small-above {
+            margin-top: 100px;
+        }
+    }
+
+
+    & > h2 {
+        margin-top: 0;
+        font-size: 15px;
+        font-weight: normal;
+        margin-bottom: 40px;
     }
 
 
@@ -1539,10 +1552,6 @@ footer {
             margin-left: auto;
             margin-right: auto;
         }
-    }
-
-    h2 {
-        font-size: 16px;
     }
 
     .note {
