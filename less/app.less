@@ -1014,6 +1014,7 @@ a:hover, a:active {
             margin: 20px 0 0 0;
 
             &.propublica { margin-top: 55px; }
+            &:first-child { margin-top: 0; }
 
             .atc-teaser {
                 .make-md-column(8);
@@ -1250,10 +1251,6 @@ a:hover, a:active {
 
         //project credits
         .credits {
-            margin-top: 40px;
-            border-top: 1px solid #666;
-            padding-top: 10px;
-
             h6 {
                 font-weight: bold;
                 text-transform: uppercase;
@@ -1270,13 +1267,13 @@ a:hover, a:active {
 }// end content
 
 .story-footer {
-    background: #333;
+    background: #e0e0e0;
     @media @screen-small-above {
-        background: #333;
+        background: #e0e0e0;
         .background-size(cover);
     }
 
-    color: #ddd;
+    color: #777;
     position: relative;
     padding-bottom: 40px;
     padding-top: 50px;
@@ -1285,6 +1282,8 @@ a:hover, a:active {
     .story-wrapper {
         .make-row();
         margin: 20px 0 0 0;
+
+        &:first-child { margin-top: 0; }
 
         .story-image {
             .make-md-column(2);
@@ -1322,10 +1321,6 @@ a:hover, a:active {
 
     //project credits
     .credits {
-        margin-top: 40px;
-        border-top: 1px solid #666;
-        padding-top: 10px;
-
         h6 {
             font-weight: bold;
             text-transform: uppercase;
