@@ -572,13 +572,14 @@ a:hover, a:active {
     }
 
     h5, p {
-        font-size: 13px;
+        font-size: 14px;
         line-height: 1.4;
-        margin: 30px 0;
+        margin: 15px 0;
         color: #333;
         @media @screen-small-above {
-            font-size: 17px;
+            font-size: 18px;
             line-height: 1.7;
+            margin: 30px 0;
         }
     }
 
@@ -1506,9 +1507,13 @@ footer {
 
     & > h1 {
         font-size: 42px;
+        line-height: 1.1;
         font-weight: bold;
-        margin-top: 50px;
+        margin-top: 100px;
         margin-bottom: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
         a {
             display: block;
             position: relative;
@@ -1522,10 +1527,18 @@ footer {
 
 
     & > h2 {
+        font-family: @font-family-serif;
+        font-style: italic;
         margin-top: 0;
         font-size: 15px;
         font-weight: normal;
-        margin-bottom: 40px;
+        margin-bottom: 100px;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    > p {
+        font-family: @font-family-serif;
     }
 
 
