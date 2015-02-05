@@ -48,13 +48,6 @@ def widget():
     """
     return make_response(render_template('widget.html', **make_context()))
 
-@app.route('/test_widget.html')
-def test_widget():
-    """
-    Example page displaying widget at different embed sizes.
-    """
-    return make_response(render_template('test_widget.html', **make_context()))
-
 @contextfunction
 def render_file(context, path):
     """
