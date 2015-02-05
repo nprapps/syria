@@ -52,6 +52,11 @@
 
 <section id="content">
     {{ render_file('copy.md')|markdown|smarty }}
+    <div class="share-wrapper">
+        <div class="share btn btn-default" data-toggle="modal" data-backdrop="static" data-target="#share-modal">
+            <strong>Share And Discuss</strong> <i class="fa fa-share"></i>
+        </div>
+    </div>
 </section>
 
 <!-- content -->
