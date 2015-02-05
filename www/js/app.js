@@ -138,7 +138,7 @@ var button_toggle_caption_click = function() {
     * Click handler for the caption toggle.
     */
 
-    _gaq.push(['_trackEvent', APP_CONFIG.PROJECT_SLUG, 'captions', 'Clicked caption button']);
+    ANALYTICS.trackEvent('captions', 'Clicked caption button');
     $( this ).parent( ".captioned" ).toggleClass('cap-on');
 };
 
@@ -148,8 +148,7 @@ var on_nav_click = function(){
     */
     var hash = $(this).attr('href').replace('#', '');
     $.smoothScroll({ speed: 800, scrollTarget: '#' + hash });
-    _gaq.push(['_trackEvent', APP_CONFIG.PROJECT_SLUG, 'navigation', 'clicked chapter nav link']);
-
+    ANALYTICS.trackEvent('navigation', 'clicked chapter nav link');
     return false;
 };
 
@@ -160,13 +159,6 @@ var on_lightbox_click = function() {
     if (!Modernizr.touch) {
         lightbox_image($(this).find('img'));
     }
-};
-
-var on_intro_advance_click = function() {
-    /*
-    * Click handler on intro advance.
-    */
-    $.smoothScroll({ speed: 800, scrollTarget: '#bananas' });
 };
 
 var on_waypoint = function(element, direction) {
@@ -320,8 +312,7 @@ var fade_lightbox_out = function() {
 
 var onClippyCopy = function(e) {
     alert('Copied to your clipboard!');
-
-    _gaq.push(['_trackEvent', APP_CONFIG.PROJECT_SLUG, 'summary-copied']);
+    ANALYTICS.copySummary();
 }
 
 /*
@@ -343,8 +334,21 @@ var onScroll = _.throttle(function(e) {
 
     $.each(marks, function(mark, px) {
         if (trackedMarks.indexOf(mark) == -1 && scrollDistance >= px) {
-            _gaq.push(['_trackEvent', APP_CONFIG.PROJECT_SLUG, 'completion', mark]);
             trackedMarks.push(mark);
+            switch (mark) {
+                case '25%':
+                    ANALYTICS.completeTwentyFivePercent();
+                    break;
+                case '50%':
+                    ANALYTICS.completeFiftyPercent();
+                    break;
+                case '75%':
+                    ANALYTICS.completeSeventyFivePercent();
+                    break;
+                case '100%':
+                    ANALYTICS.completeOneHundredPercent();
+                    break;
+            }
         }
     });
 }, 500);
@@ -353,7 +357,7 @@ var onScroll = _.throttle(function(e) {
  * Share modal opened.
  */
 var onShareModalShown = function(e) {
-    _gaq.push(['_trackEvent', APP_CONFIG.PROJECT_SLUG, 'open-share-discuss']);
+    ANALYTICS.openShareDiscuss();
 
     if (firstShare) {
         loadComments();
@@ -366,7 +370,7 @@ var onShareModalShown = function(e) {
  * Share modal closed.
  */
 var onShareModalHidden = function(e) {
-    _gaq.push(['_trackEvent', APP_CONFIG.PROJECT_SLUG, 'close-share-discuss']);
+    ANALYTICS.closeShareDiscuss();
 }
 
 $(document).ready(function() {
@@ -388,7 +392,6 @@ $(document).ready(function() {
     $nav.on('click', on_nav_click);
     $enlarge.on('click', on_lightbox_click);
     $w.on('resize', on_window_resize);
-    $intro_advance.on('click', on_intro_advance_click);
     $shareModal.on('shown.bs.modal', onShareModalShown);
     $shareModal.on('hidden.bs.modal', onShareModalHidden);
     $(document).on('scroll', onScroll);
