@@ -174,31 +174,21 @@ var on_waypoint = function(element, direction) {
     * Event for reaching a waypoint.
     */
 
-    // Get the waypoint name.
-    var waypoint = $(element).attr('id');
+    $('ul.nav li').removeClass('active');
 
-
-    // Just hard code this because of reasons.
     if (direction == "down") {
-        if ($(element).hasClass('chapter')) {
-            $('ul.nav li').removeClass('active');
-            $('.' + waypoint + '-nav').addClass('active');
-        }
+        var active = $(element).attr('id');
+    }
+    else if (direction == "up") {
+        var prev = $(element).parent().prevAll('h1:first');
+        var active = prev.find('a').attr('id');
     }
 
-    if (direction == "up") {
-        var $previous_element = $(element).prev();
-        if ($previous_element.hasClass('chapter')) {
-            $('ul.nav li').removeClass('active');
-            $('.' + $previous_element.attr('id') + '-nav').addClass('active');
-        }
-    }
-
-    // If this is a chapter waypoint, run the chapter transitions.
-    if ($(element).children('.edge-to-edge')){
-        $(element).addClass('chapter-active');
+    if (active) {
+        $('.' + active + '-nav').addClass('active');
     }
 };
+
 var lightbox_image = function(element) {
     /*
     * We built our own lightbox function.
@@ -383,7 +373,7 @@ $(document).ready(function() {
     $container = $('#content');
     $titlecard = $('.titlecard');
     $titlecard_wrapper = $('.titlecard-wrapper');
-    $waypoints = $('.waypoint');
+    $waypoints = $('#content h1 a');
     $nav = $('.nav a');
     $begin = $('.begin-bar');
     $button_toggle_caption = $('.caption-label');
@@ -416,12 +406,18 @@ $(document).ready(function() {
 
     $waypoints.waypoint(function(direction){
         on_waypoint(this, direction);
-    }, { offset: $w.height() / 2 });
+    });
 });
 
 // Defer pointer events on animated header
 $w.load(function (){
-  $('header').css({
-    'pointer-events': 'auto'
-  });
+    $('header').css({
+        'pointer-events': 'auto'
+    });
+
+    var pymParent = new pym.Parent(
+        'responsive-embed-syria-refugees-by-country',
+        'http://apps.npr.org/dailygraphics/graphics/syria-refugees-by-country/child.html',
+        {}
+    );
 });
