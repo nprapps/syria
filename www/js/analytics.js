@@ -6,18 +6,22 @@ var _gaq = _gaq || [];
 
 var ANALYTICS = (function () {
 
-    // Global time tracking variables
+    /* 
+     * Global time tracking variables
+     */
+    // The time the current slide was pulled up
     var slideStartTime =  new Date();
+    // The time spent on the previous slide, for use in slide-specific tests
     var timeOnLastSlide = null;
 
     /*
      * Google Analytics
      */
     var setupGoogle = function() {
-        _gaq.push(['_setAccount', APP_CONFIG.GOOGLE_ANALYTICS.ACCOUNT_ID]);
-        _gaq.push(['_setDomainName', APP_CONFIG.GOOGLE_ANALYTICS.DOMAIN]);
+        _gaq.push(['_setAccount', APP_CONFIG.PROJECT_GOOGLE_ANALYTICS.ACCOUNT_ID]);
+        _gaq.push(['_setDomainName', APP_CONFIG.PROJECT_GOOGLE_ANALYTICS.DOMAIN]);
         //_gaq.push(['_setCustomVar', 1, 'BC', '', 3]);
-        _gaq.push(['_setCustomVar', 2, 'Topics', APP_CONFIG.GOOGLE_ANALYTICS.TOPICS, 3]);
+        _gaq.push(['_setCustomVar', 2, 'Topics', APP_CONFIG.GOOGLE_ANALYTICS_TOPICS, 3]);
         //_gaq.push(['_setCustomVar', 3, 'Program ID', '', 3]);
         //_gaq.push(['_setCustomVar', 3, 'Localization', '', 1]);
         _gaq.push(['_setCustomVar', 4, 'OrgID', '1', 3]);
@@ -133,7 +137,7 @@ var ANALYTICS = (function () {
      * Event tracking.
      */
     var trackEvent = function(eventName, label, value, custom1, custom2) {
-        var args = ['_trackEvent', APP_CONFIG.PROJECT_SLUG];
+        var args = ['_trackEvent', APP_CONFIG.DEPLOY_SLUG];
 
         args.push(eventName);
 
@@ -188,12 +192,12 @@ var ANALYTICS = (function () {
         trackEvent('new-comment');
     }
 
-    var actOnFeaturedTweet = function(action, tweet_url) {
-        trackEvent('featured-tweet-action', action, null, tweet_url);
+    var actOnFeaturedTweet = function(action, tweetUrl) {
+        trackEvent('featured-tweet-action', action, null, tweetUrl);
     }
 
-    var actOnFeaturedFacebook = function(action, post_url) {
-        trackEvent('featured-facebook-action', action, null, post_url);
+    var actOnFeaturedFacebook = function(action, postUrl) {
+        trackEvent('featured-facebook-action', action, null, postUrl);
     }
 
     var copySummary = function() {
@@ -228,11 +232,16 @@ var ANALYTICS = (function () {
 
     // SLIDES
 
-    var exitSlide = function(slide_index, last_slide_exit_event) {
+    var exitSlide = function(slideIndex, lastSlideExitEvent) {
         var currentTime = new Date();
         timeOnLastSlide = Math.abs(currentTime - slideStartTime);
         slideStartTime = currentTime;
-        trackEvent('slide-exit', slide_index, timeOnLastSlide, last_slide_exit_event);
+        trackEvent('slide-exit', slideIndex, timeOnLastSlide, lastSlideExitEvent);
+    }
+
+    // This depends on exitSlide executing
+    var firstRightArrowClick = function(test) {
+        trackEvent('first-right-arrow-clicked', test, timeOnLastSlide);
     }
 
     return {
@@ -252,7 +261,8 @@ var ANALYTICS = (function () {
         'completeFiftyPercent': completeFiftyPercent,
         'completeSeventyFivePercent': completeSeventyFivePercent,
         'completeOneHundredPercent': completeOneHundredPercent,
-        'exitSlide': exitSlide
+        'exitSlide': exitSlide,
+        'firstRightArrowClick': firstRightArrowClick
     };
 }());
 

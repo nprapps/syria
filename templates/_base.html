@@ -1,82 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <title>{{ COPY.story_metadata.title }} : NPR</title>
+    <title>{{ COPY.post_metadata.title }}</title>
 
     <!-- META TAGS -->
-    {% include '_meta.html' %}
-
-    <!-- CHARTBEAT -->
-    <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+    {% include '_meta.html' % slug %}
 
     <!-- FONTS -->
-    {% include '_fonts.html' %}
+    {% include '_fonts.html' % slug %}
 
     <!-- CSS -->
     {{ CSS.push('less/app.less') }}
     {% block extra_css %}{% endblock extra_css %}
     {{ CSS.render('css/app.min.css') }}
 
-    <!-- JS -->
-    {{ JS.push('js/lib/modernizr.js') }}
-    {{ JS.render('js/app-header.min.js') }}
-
-    {% include '_social_tags.html' %}
+    {% include '_social_tags.html' % slug %}
 
     {% block extra_head %}
     {% endblock extra_head %}
 </head>
 <body>
+    <a class="sr-only" href="#content">Skip To Content</a>
+
     {% block outer_content %}
+
+    {% block header_content %}
+    {% endblock header_content %}
+
     {% block content %}
     {% endblock content %}
-
-    <footer>
-        <div class="primary">
-            <ul>
-                <li><a href="http://www.npr.org" data-action="Click Logo"><img src="http://media.npr.org/chrome/news/nprlogo_138x46.gif" alt="NPR Logo"></a></li>
-                <li class="news"><a href="http://www.npr.org/sections/news/">News</a></li>
-                <li class="artslife"><a href="http://www.npr.org/sections/arts/">Arts &amp; Life</a></li>
-                <li class="music"><a href="http://www.npr.org/music/">Music</a></li>
-                <li class="programs"><a href="http://www.npr.org/programs/">Programs</a></li>
-                <li class="listen"><a href="http://www.npr.org/listen/">Listen</a></li>
-                <li class="about"><a href="http://www.npr.org/about/">About</a></li>
-            </ul>
-        </div>
-        <div class="secondary">
-            <p>&copy;2014 NPR</p>
-            <ul>
-                <li id="footerContact"><a href="http://help.npr.org/npr/includes/customer/npr/custforms/contactus.aspx">Contact</a></li>
-                <li><a href="http://www.npr.org/about/termsofuse.html">Terms of Use</a></li>
-                <li><a href="http://www.npr.org/about/privacypolicy.html">Privacy</a></li>
-                <li><a href="http://thin.npr.org/">Text-Only</a></li>
-            </ul>
-        </div>
-    </footer>
+    {% block wide_content %}
+    {% endblock wide_content %}
 
     {% endblock outer_content %}
 
-    {% block comments %}
-    <div id="comments" class="comments-container comments-panel"></div>
-    {% endblock %}
-
+    {{ JS.push('js/lib/modernizr.js') }}
     {{ JS.push('js/lib/jquery.js') }}
-    {{ JS.push('js/lib/underscore.js') }}
-    {{ JS.push('js/lib/bootstrap.js') }}
-    {{ JS.push('js/lib/moment.js') }}
-    {{ JS.push('js/lib/jquery.unveil.js') }}
-    {{ JS.push('js/lib/jquery.smooth-scroll.min.js') }}
-    {{ JS.push('js/lib/jquery.waypoints.js') }}
+    {{ JS.push('js/lib/jquery.fullpage.js') }}
     {{ JS.push('js/lib/ZeroClipboard.js') }}
-    {{ JS.push('js/lib/headroom.js') }}
-    {{ JS.push('js/lib/jquery.headroom.js') }}
-    {{ JS.push('js/lib/pym.js') }}
     {{ JS.push('js/app_config.js') }}
     {{ JS.push('js/copy.js') }}
     {{ JS.push('js/console.js') }}
-    {{ JS.push('js/ads.js') }}
-    {{ JS.push('js/templates.js') }}
-    {{ JS.push('js/comments.js') }}
     {{ JS.push('js/app.js') }}
     {% block extra_foot_js %}{% endblock extra_foot_js %}
     {{ JS.push('js/analytics.js') }}
@@ -84,9 +49,5 @@
 
     {% block extra_foot %}
     {% endblock extra_foot %}
-
-
-    {% include '_share_modal.html' %}
-
 </body>
 </html>

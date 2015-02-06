@@ -1,85 +1,22 @@
 {% extends '_base.html' %}
 
-{% block extra_css %}
-{% endblock extra_css %}
+{% block header_content %}
+{% endblock %}
 
-{% block extra_head_js %}
-{% endblock extra_head_js %}
-
-{% block extra_head %}
-
-{% endblock extra_head %}
 
 {% block content %}
-<div class="titlecard-wrapper">
-    <div id="top" style="top:0px;position:absolute;" class="waypoint" data-down-waypoint="0,38" data-up-waypoint="0,38"></div>
-    <div id="title-text" class="animated fadeIn">
-        <div class="container">
-            <div class="titlecard-container">
-                <div class="titlecard-content">
-                    <ul class="credit">
-                        <li>
-                            <a href="http://www.npr.org"><img src="assets/img/npr-logo.png" class="npr-logo" alt="NPR" /></a>
-                        </li>
-                        <li>{{ COPY.story_metadata.byline }}</li>
-                    </ul>
-                    <h1>{{ COPY.story_metadata.title }}</h1>
-                    <h2>{{ COPY.story_metadata.subtitle }}</h2>
 
-                    <div class="begin-bar">
-                        <p><strong>Begin</strong></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="titlecard-mask animated fadeOut"></div>
-    <div class="titlecard"></div>
+<div class="section">
+    {% for row in COPY.content %}
+        {% include "%s/templates/slides/%s.html" % (slug, row.template) ignore missing %}
+    {% endfor %}
+</div>
+<div class="primary-navigation" style="opacity:1;">
+    <div class="controlArrow prev"></div>
+    <div class="controlArrow next"></div>
 </div>
 
-<header class="controls headroom" data-headroom>
-    <ul class="section-nav nav">
-        <li class="top-nav active">
-            <a href="#top"><strong>Start</strong> <i class="fa fa-home"></i></a>
-        </li>
-        {% for row in COPY.nav %}
-            <li class="{{ row.key }}-nav">
-                <a href="#{{ row.key }}"><span class="chapter">{{ loop.index }}</span> <strong>{{ row.value }}</strong></a>
-            </li>
-        {% endfor %}
-    </ul>
-</header>
+{% endblock %}
 
-<section id="content">
-    {{ render_file('copy.md')|markdown|smarty }}
-    <div class="share-wrapper">
-        <div class="share btn btn-default" data-toggle="modal" data-backdrop="static" data-target="#share-modal">
-            <strong>Share And Discuss</strong> <i class="fa fa-share"></i>
-        </div>
-    </div>
-</section>
-
-<!-- content -->
-<div class="story-footer">
-    <div class="container">
-
-            <div class="story-wrapper">
-                <div class="story-text noimg">
-
-                    <div class="credits">
-                        <h6>{{ COPY.story_metadata.credits_hed }}</h6>
-                        {{ COPY.story_metadata.credits_text }}
-                        
-                        <p>{{ COPY.story_metadata.footnotes_hed }}: {{ COPY.syria_labels.footnote }} | Sources: {{ COPY.syria_labels.source }}</p>
-
-                        <p><em>{{ COPY.story_metadata.pubdate }}</em></p>
-                    </div>
-
-                </div><!--/col-->
-            </div><!--/story-wrapper-->
-    </div><!--/container-->
-</div><!--/audio-story -->
-
-{% endblock content %}
-{% block extra_foot_js %}
+{% block wide_content %}
 {% endblock %}

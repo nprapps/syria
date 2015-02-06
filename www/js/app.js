@@ -1,405 +1,326 @@
-var $container;
-var $titlecard;
-var $titlecard_wrapper;
-var $w = $(window);
-var $waypoints;
-var $nav;
-var $begin;
-var $button_toggle_caption;
-var $lightbox;
-var $lightbox_image;
-var $story_player_button;
-var $enlarge;
-var $intro_advance;
-var $side_by_sides;
-var $shareModal;
-var aspect_width = 16;
-var aspect_height = 9;
-var first_page_load = true;
-var firstShare = true;
+// Global state
+var $upNext = null;
+var $w;
+var $h;
+var $slides;
+var $arrows;
+var $nextArrow;
+var $startCardButton;
+var isTouch = Modernizr.touch;
+var mobileSuffix;
+var aspectWidth = 16;
+var aspectHeight = 9;
+var optimalWidth;
+var optimalHeight;
 var w;
 var h;
-var w_optimal;
-var h_optimal;
-var fade;
-var trackedMarks = [];
+var completion = 0;
+var arrowTest;
+var lastSlideExitEvent;
+var hammer;
+var firstRightArrowClicked = false;
 
-var unveil_images = function() {
-    /*
-    * Loads images using jQuery unveil.
-    * Current depth: 3x the window height.
-    */
-    if (Modernizr.touch) {
-        // If we're on a touch device, just load all the images.
-        // Seems backwards, but iOS Safari and Android have terrible scroll event
-        // handling that doesn't allow unveil to progressively load images.
-        $container.find('img').unveil($(document).height());
-    }
-    else {
-        // Otherwise, start loading at 3x the window height.
-        $container.find('img').unveil($w.height() * 3);
+var resize = function() {
+    $w = $(window).width();
+    $h = $(window).height();
+
+    $slides.width($w);
+
+    optimalWidth = ($h * aspectWidth) / aspectHeight;
+    optimalHeight = ($w * aspectHeight) / aspectWidth;
+
+    w = $w;
+    h = optimalHeight;
+
+    if (optimalWidth > $w) {
+        w = optimalWidth;
+        h = $h;
     }
 };
 
-var sub_responsive_images = function() {
-    /*
-    * Replaces large images with small ones for tiny devices.
-    * Contains a test for non-tablet devices.
-    */
-
-    // If the window is narrow and this is a touch device ...
-    if ($w.width() < 769 && Modernizr.touch === true) {
-
-        // Loop over our images ...
-        _.each($container.find('img'), function(img){
-
-            // If the image has a data-src attribute ...
-            if ($(img).attr('data-src')){
-
-                // Sub in the responsive image from that data-src attribute.
-                var responsive_image = $(img).attr('data-src').replace('.jpg', '_m.jpg');
-                $(img).attr('data-src', responsive_image);
-            }
-        });
+var setUpFullPage = function() {
+    //var anchors = ['_'];
+    var anchors = [];
+    for (var i = 0; i < COPY.nav.length; i++) {
+        anchors.push(COPY.nav[i].id);
     }
-
-    // Call unveil afterwards.
-    unveil_images();
+    $.fn.fullpage({
+        anchors: (!APP_CONFIG.DEPLOYMENT_TARGET) ? anchors : false,
+        autoScrolling: false,
+        keyboardScrolling: false,
+        verticalCentered: false,
+        fixedElements: '.primary-navigation, #share-modal',
+        resize: false,
+        css3: true,
+        loopHorizontal: false,
+        afterRender: onPageLoad,
+        afterSlideLoad: lazyLoad,
+        onSlideLeave: onSlideLeave
+    });
 };
 
-var on_window_resize = function() {
-    /*
-    * Handles resizing our full-width images.
-    * Makes decisions based on the window size.
-    */
-    var w_width = $w.width();
-    var w_height = $w.height();
-
-    // Calculate optimal width if height is constrained to window height.
-    w_optimal = (w_height * aspect_width) / aspect_height;
-
-    // Calculate optimal height if width is constrained to window width.
-    h_optimal = (w_width * aspect_height) / aspect_width;
-
-    // Decide whether to go with optimal height or width.
-    w = w_width;
-    h = h_optimal;
-
-    if (w_optimal > w_width) {
-        w = w_optimal;
-        h = w_height;
-    }
-
-    $titlecard.width(w + 'px').height(h + 'px');
-    $titlecard.css('left', ((w_width - w) / 2) + 'px');
-    $titlecard.css('top', ((w_height - h) / 2) + 'px');
-    $titlecard_wrapper.height(w_height + 'px');
-    //$opener.height($w.height() + 'px');
-    $container.css('marginTop', w_height + 'px');
-
-    // set the image grid spacing properly
-    fix_image_grid_spacing();
+var onPageLoad = function() {
+    setSlidesForLazyLoading(0);
+    $('.section').css({
+      'opacity': 1,
+      'visibility': 'visible',
+    });
+    showNavigation();
 };
 
-var fix_image_grid_spacing = function() {
-    _.each($side_by_sides, function(side_by_side) {
-        if ($w.width() < 992) {
-            if ($(side_by_side).next().hasClass('side-by-side-wrapper')) {
-                $(side_by_side).css('margin-bottom', 0);
-            }
+// after a new slide loads
+var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
+    setSlidesForLazyLoading(slideIndex);
+    showNavigation();
+
+    // Completion tracking
+    how_far = (slideIndex + 1) / ($slides.length - APP_CONFIG.NUM_SLIDES_AFTER_CONTENT);
+
+    if (how_far >= completion + 0.25) {
+        completion = how_far - (how_far % 0.25);
+
+        if (completion === 0.25) {
+            ANALYTICS.completeTwentyFivePercent();
         }
-        else {
-            if ($(side_by_side).next().hasClass('side-by-side-wrapper')) {
-                $(side_by_side).css('margin-bottom', 30);
-            }
+        else if (completion === 0.5) {
+            ANALYTICS.completeFiftyPercent();
         }
+        else if (completion === 0.75) {
+            ANALYTICS.completeSeventyFivePercent();
+        }
+        else if (completion === 1) {
+            ANALYTICS.completeOneHundredPercent();
+        }
+    }
+};
+
+var setSlidesForLazyLoading = function(slideIndex) {
+    /*
+    * Sets up a list of slides based on your position in the deck.
+    * Lazy-loads images in future slides because of reasons.
+    */
+    var slides = [
+        $slides.eq(slideIndex - 2),
+        $slides.eq(slideIndex - 1),
+        $slides.eq(slideIndex),
+        $slides.eq(slideIndex + 1),
+        $slides.eq(slideIndex + 2)
+    ];
+
+    // Mobile suffix should be blank by default.
+    mobileSuffix = '';
+
+    if ($w < 769) {
+        mobileSuffix = '-sq';
+    }
+
+    for (var i = 0; i < slides.length; i++) {
+        loadImages(slides[i]);
+    };
+
+}
+
+var loadImages = function($slide) {
+    /*
+    * Sets the background image on a div for our fancy slides.
+    */
+    if ($slide.data('bgimage')) {
+        var image_filename = $slide.data('bgimage').split('.')[0];
+        var image_extension = '.' + $slide.data('bgimage').split('.')[1];
+        var image_path = 'assets/' + image_filename + mobileSuffix + image_extension;
+
+        if ($slide.css('background-image') === 'none') {
+            $slide.css('background-image', 'url(' + image_path + ')');
+        }
+    }
+
+    var $images = $slide.find('img.lazy-load');
+    if ($images.length > 0) {
+        for (var i = 0; i < $images.length; i++) {
+            var image = $images.eq(i).data('src');
+            $images.eq(i).attr('src', 'assets/' + image);
+        }
+    }
+};
+
+var showNavigation = function() {
+    /*
+    * Nav doesn't exist by default.
+    * This function loads it up.
+    */
+
+    if ($slides.first().hasClass('active')) {
+        /*
+        * Don't show arrows on titlecard
+        */
+        $arrows.hide();
+    }
+
+    else if ($slides.last().hasClass('active')) {
+        /*
+        * Last card gets no next arrow but does have the nav.
+        */
+        if (!$arrows.hasClass('active')) {
+            showArrows();
+        }
+
+        $nextArrow.removeClass('active');
+        $nextArrow.hide();
+    } else if ($slides.eq(1).hasClass('active')) {
+        showArrows();
+
+        switch (arrowTest) {
+            case 'bright-arrow':
+                $nextArrow.addClass('titlecard-nav');
+                break;
+            case 'bouncy-arrow':
+                $nextArrow.addClass('shake animated titlecard-nav');
+                break;
+            default:
+                break;
+        }
+
+        $nextArrow.on('click', onFirstRightArrowClick);
+    } else {
+        /*
+        * All of the other cards? Arrows and navs.
+        */
+        if ($arrows.filter('active').length != $arrows.length) {
+            showArrows();
+        }
+        $nextArrow.removeClass('shake animated titlecard-nav');
+
+        $nextArrow.off('click', onFirstRightArrowClick);
+    }
+}
+
+var showArrows = function() {
+    /*
+    * Show the arrows.
+    */
+    $arrows.addClass('active');
+    $arrows.show();
+};
+
+var determineArrowTest = function() {
+    var possibleTests = ['faded-arrow', 'bright-arrow', 'bouncy-arrow'];
+    var test = possibleTests[getRandomInt(0, possibleTests.length)]
+    return test;
+}
+
+var getRandomInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
+var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
+    /*
+    * Called when leaving a slide.
+    */
+    ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent);
+}
+
+var onFirstRightArrowClick = function() {
+    if (firstRightArrowClicked === false) {
+        ANALYTICS.firstRightArrowClick(arrowTest);
+        firstRightArrowClicked = true;
+    }
+}
+
+var onStartCardButtonClick = function() {
+    lastSlideExitEvent = 'go';
+    $.fn.fullpage.moveSlideRight();
+}
+
+var onArrowsClick = function() {
+    lastSlideExitEvent = 'arrow';
+}
+
+var onDocumentKeyDown = function(e) {
+    if (e.which === 37 || e.which === 39) {
+        lastSlideExitEvent = 'keyboard';
+        ANALYTICS.useKeyboardNavigation();
+        if (e.which === 37) {
+            $.fn.fullpage.moveSlideLeft();
+        } else if (e.which === 39) {
+            $.fn.fullpage.moveSlideRight();
+        }
+    }
+    // jquery.fullpage handles actual scrolling
+    return true;
+}
+
+var onSlideClick = function(e) {
+    if (isTouch) {
+        lastSlideExitEvent = 'tap';
+        $.fn.fullpage.moveSlideRight();
+    }
+    return true;
+}
+
+var onNextPostClick = function(e) {
+    e.preventDefault();
+
+    ANALYTICS.trackEvent('next-post');
+    window.top.location = NEXT_POST_URL;
+    return true;
+}
+
+var fakeMobileHover = function() {
+    $(this).css({
+        'background-color': '#fff',
+        'color': '#000',
+        'opacity': .9
     });
-};
+}
 
-var on_begin_click = function() {
-    /*
-    * Handles clicks on the begin button.
-    */
-
-    // If this is a mobile device, start up the waterworks.
-    if (Modernizr.touch) {
-        $( "#content" ).addClass( "touch-begin" );
-    }
-
-    // Smooth scroll us to the intro.
-    $.smoothScroll({ speed: 800, scrollTarget: '#intro' });
-
-    // Don't do anything else.
-    return false;
-};
-
-var button_toggle_caption_click = function() {
-    /*
-    * Click handler for the caption toggle.
-    */
-
-    ANALYTICS.trackEvent('captions', 'Clicked caption button');
-    $( this ).parent( ".captioned" ).toggleClass('cap-on');
-};
-
-var on_nav_click = function(){
-    /*
-    * Click handler for navigation element clicks.
-    */
-    var hash = $(this).attr('href').replace('#', '');
-    $.smoothScroll({ speed: 800, scrollTarget: '#' + hash });
-    ANALYTICS.trackEvent('navigation', 'clicked chapter nav link');
-    return false;
-};
-
-var on_lightbox_click = function() {
-    /*
-    * Click handler for lightboxed photos.
-    */
-    if (!Modernizr.touch) {
-        lightbox_image($(this).find('img'));
-    }
-};
-
-var on_waypoint = function(element, direction) {
-    /*
-    * Event for reaching a waypoint.
-    */
-
-    $('ul.nav li').removeClass('active');
-
-    if (direction == "down") {
-        var active = $(element).attr('id');
-    }
-    else if (direction == "up") {
-        var prev = $(element).parent().prevAll('h1:first');
-        var active = prev.find('a').attr('id');
-    }
-
-    if (active) {
-        $('.' + active + '-nav').addClass('active');
-    }
-};
-
-var lightbox_image = function(element) {
-    /*
-    * We built our own lightbox function.
-    * We wanted more control over transitions and didn't
-    * require image substitution.
-    * You'll note that there are three functions.
-    * This is because we need to fade the lightbox in and out,
-    * but removing/adding it to the document is instantaneous with CSS.
-    */
-
-    // Add lightbox to the document.
-    $('body').append('<div id="lightbox"><i class="fa fa-plus-circle close-lightbox"></i></div>');
-
-    // Get our elements.
-    $lightbox = $('#lightbox');
-    var $el = $(element);
-
-    // Get the clicked image and add it to lightbox.
-    $lightbox.append('<img src="' + $el.attr('src') + '" id="lightbox_image">');
-    $lightbox_image = $('#lightbox_image');
-
-    // Base styles for the lightbox.
-    $lightbox.css({
-        display: 'block',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
-        'z-index': 500,
+var rmFakeMobileHover = function() {
+    $(this).css({
+        'background-color': 'rgba(0, 0, 0, 0.2)',
+        'color': '#fff',
+        'opacity': .3
     });
+}
 
-    // Transition with debounce.
-    fade = _.debounce(fade_lightbox_in, 1);
-    fade();
-
-    // Grab Wes's properly sized width.
-    var lightbox_width = w;
-
-    // Sometimes, this is wider than the window, which is bad.
-    if (lightbox_width > $w.width()) {
-        lightbox_width = $w.width();
-    }
-
-    // Set the hight as a proportion of the image width.
-    var lightbox_height = ((lightbox_width * aspect_height) / aspect_width);
-
-    // Sometimes the lightbox width is greater than the window height.
-    // Center it vertically.
-    if (lightbox_width > $w.height()) {
-        lightbox_top = (lightbox_height - $w.height()) / 2;
-    }
-
-    // Sometimes the lightbox height is greater than the window height.
-    // Resize the image to fit.
-    if (lightbox_height > $w.height()) {
-        lightbox_width = ($w.height() * aspect_width) / aspect_height;
-        lightbox_height = $w.height();
-    }
-
-    // Sometimes the lightbox width is greater than the window width.
-    // Resize the image to fit.
-    if (lightbox_width > $w.width()) {
-        lightbox_height = ($w.width() * aspect_height) / aspect_width;
-        lightbox_width = $w.width();
-    }
-
-    // Set the top and left offsets.
-    var lightbox_top = ($w.height() - lightbox_height) / 2;
-    var lightbox_left = ($w.width() - lightbox_width) / 2;
-
-    // Set styles on the lightbox image.
-    $lightbox_image.css({
-        'width': lightbox_width + 'px',
-        'height': lightbox_height + 'px',
-        'opacity': 1,
-        'position': 'absolute',
-        'top': lightbox_top + 'px',
-        'left': lightbox_left + 'px',
-    });
-
-    // Disable scrolling while the lightbox is present.
-    $('body').css({
-        overflow: 'hidden'
-    });
-
-    // On click, remove the lightbox.
-    $lightbox.on('click', on_remove_lightbox);
-};
-
-var on_remove_lightbox = function() {
-    /*
-    * Handles the click event.
-    */
-
-    // Set the element.
-    $el = $('#lightbox');
-
-    // Fade to black.
-    $el.css({
-        opacity: 0,
-    });
-
-    // Un-disable scrolling.
-    $('body').css({
-        overflow: 'auto'
-    });
-
-    // Debounce the fade.
-    fade = _.debounce(fade_lightbox_out, 250);
-    fade();
-};
-
-var fade_lightbox_in = function() {
-    /*
-    * Fade in event.
-    */
-    $lightbox.css({
-        opacity: 1
-    });
-};
-
-var fade_lightbox_out = function() {
-    /*
-    * Fade out event.
-    */
-    $lightbox.remove();
-};
-
+/*
+ * Text copied to clipboard.
+ */
 var onClippyCopy = function(e) {
     alert('Copied to your clipboard!');
+
     ANALYTICS.copySummary();
 }
 
-/*
- * Track scroll depth for completion events.
- *
- * After: https://github.com/robflaherty/jquery-scrolldepth
- */
-var onScroll = _.throttle(function(e) {
-    var docHeight = $(document).height();
-    var winHeight = window.innerHeight ? window.innerHeight : $window.height();
-    var scrollDistance = $(document).scrollTop() + winHeight;
-
-    var marks = {
-        '25%' : parseInt(docHeight * 0.25),
-        '50%' : parseInt(docHeight * 0.50),
-        '75%' : parseInt(docHeight * 0.75),
-        '100%': docHeight - 5
-    };
-
-    $.each(marks, function(mark, px) {
-        if (trackedMarks.indexOf(mark) == -1 && scrollDistance >= px) {
-            trackedMarks.push(mark);
-            switch (mark) {
-                case '25%':
-                    ANALYTICS.completeTwentyFivePercent();
-                    break;
-                case '50%':
-                    ANALYTICS.completeFiftyPercent();
-                    break;
-                case '75%':
-                    ANALYTICS.completeSeventyFivePercent();
-                    break;
-                case '100%':
-                    ANALYTICS.completeOneHundredPercent();
-                    break;
-            }
-        }
-    });
-}, 500);
-
-/*
- * Share modal opened.
- */
-var onShareModalShown = function(e) {
-    ANALYTICS.openShareDiscuss();
-
-    if (firstShare) {
-        loadComments();
-
-        firstShare = false;
+var onSwipeLeft = function(e) {
+    if (isTouch) {
+        lastSlideExitEvent = 'swipeleft';    
+        $.fn.fullpage.moveSlideRight();
     }
 }
 
-/*
- * Share modal closed.
- */
-var onShareModalHidden = function(e) {
-    ANALYTICS.closeShareDiscuss();
+var onSwipeRight = function(e) {
+    if (isTouch) {
+        lastSlideExitEvent = 'swiperight';
+        $.fn.fullpage.moveSlideLeft();      
+    }
 }
 
 $(document).ready(function() {
-    $container = $('#content');
-    $titlecard = $('.titlecard');
-    $titlecard_wrapper = $('.titlecard-wrapper');
-    $waypoints = $('#content h1 a');
-    $nav = $('.nav a');
-    $begin = $('.begin-bar');
-    $button_toggle_caption = $('.caption-label');
-    $overlay = $('#fluidbox-overlay');
-    $enlarge = $('.enlarge');
-    $intro_advance = $("#intro-advance");
-    $side_by_sides = $('.side-by-side-wrapper');
-    $shareModal = $('#share-modal');
+    $w = $(window).width();
+    $h = $(window).height();
 
-    $button_toggle_caption.on('click', button_toggle_caption_click);
-    $begin.on('click', on_begin_click);
-    $nav.on('click', on_nav_click);
-    $enlarge.on('click', on_lightbox_click);
-    $w.on('resize', on_window_resize);
-    $shareModal.on('shown.bs.modal', onShareModalShown);
-    $shareModal.on('hidden.bs.modal', onShareModalHidden);
-    $(document).on('scroll', onScroll);
+    $slides = $('.slide');
+    $navButton = $('.primary-navigation-btn');
+    $startCardButton = $('.btn-go');
+    $arrows = $('.controlArrow');
+    $nextArrow = $arrows.filter('.next');
+    $upNext = $('.up-next');
 
-    on_window_resize();
-    sub_responsive_images();
-    fix_image_grid_spacing();
-
+    $startCardButton.on('click', onStartCardButtonClick);
+    $slides.on('click', onSlideClick);
+    $upNext.on('click', onNextPostClick);
+    $arrows.on('click', onArrowsClick);
+    $arrows.on('touchstart', fakeMobileHover);
+    $arrows.on('touchend', rmFakeMobileHover);
 
     ZeroClipboard.config({ swfPath: 'js/lib/ZeroClipboard.swf' });
     var clippy = new ZeroClipboard($(".clippy"));
@@ -407,20 +328,12 @@ $(document).ready(function() {
         clippy.on('aftercopy', onClippyCopy);
     });
 
-    $waypoints.waypoint(function(direction){
-        on_waypoint(this, direction);
-    });
-});
+    setUpFullPage();
+    resize();
 
-// Defer pointer events on animated header
-$w.load(function (){
-    $('header').css({
-        'pointer-events': 'auto'
-    });
-
-    var pymParent = new pym.Parent(
-        'responsive-embed-syria-refugees-by-country',
-        'http://apps.npr.org/dailygraphics/graphics/syria-refugees-by-country/child.html',
-        {}
-    );
+    arrowTest = determineArrowTest();
+    // Redraw slides if the window resizes
+    window.addEventListener("deviceorientation", resize, true);
+    $(window).resize(resize);
+    $(document).keydown(onDocumentKeyDown);
 });
