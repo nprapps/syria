@@ -16,11 +16,12 @@
         </div>
         {% endif %}
     </div>
-</div>
-{% if row.metacaption %}
-<div class="metacaption{% if row.class %} {{ row.class }}{% endif %}">
-    <div class="caption-text">
-        <h6>{{ row.metacaption|smarty }}</h6>
+
+    {% if row.metacaption %}
+    <div class="metacaption">
+        <div class="caption-text">
+            <h6>{{ row.metacaption|smarty }}</h6>
+        </div>
     </div>
+    {% endif %}
 </div>
-{% endif %}

@@ -4,6 +4,7 @@ var $w;
 var $h;
 var $slides;
 var $nextChapter;
+var $previousChapter;
 var $startCardButton;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
@@ -153,6 +154,11 @@ var onNextChapterClick = function() {
     $.fn.fullpage.moveSlideRight();
 }
 
+var onPreviousChapterClick = function() {
+    lastSlideExitEvent = 'previous-chapter';
+    $.fn.fullpage.moveSlideLeft();
+}
+
 var onNextPostClick = function(e) {
     e.preventDefault();
 
@@ -192,11 +198,13 @@ $(document).ready(function() {
     $navButton = $('.primary-navigation-btn');
     $startCardButton = $('.btn-go');
     $nextChapter = $('.next-chapter');
+    $previousChapter = $('.previous-chapter');
     $upNext = $('.up-next');
 
     $startCardButton.on('click', onStartCardButtonClick);
     $upNext.on('click', onNextPostClick);
     $nextChapter.on('click', onNextChapterClick);
+    $previousChapter.on('click', onPreviousChapterClick);
 
     ZeroClipboard.config({ swfPath: 'js/lib/ZeroClipboard.swf' });
     var clippy = new ZeroClipboard($(".clippy"));
