@@ -1,6 +1,6 @@
 <div class="side-by-side-wrapper {% if row.class %} {{ row.class }}{% endif %}">
     <div class="side-by-side captioned">
-        <img src="assets/img/transparent_1500.png" data-src="assets/img/{{ row.photo }}" alt="{{ row.photo_caption|smarty }}" class="img-responsive">
+        <img src="assets/img/transparent_1500.png" data-image="{{ row.photo }}" alt="{{ row.photo_caption|smarty }}" class="img-responsive">
         {% if row.photo_caption %}
         <div class="caption-text">
             <h6>{{ row.photo_caption }}</h6>
@@ -9,12 +9,11 @@
         {% endif %}
     </div>
     <div class="side-by-side captioned">
-        <img src="assets/img/transparent_1500.png" data-src="assets/img/{{ row.photo_2 }}" alt="{{ row.photo_2_caption|smarty }}" class="img-responsive">
+        <img src="assets/img/transparent_1500.png" data-image="{{ row.photo_2 }}" alt="{{ row.photo_2_caption|smarty }}" class="img-responsive">
         {% if row.photo_2_caption %}
         <div class="caption-text">
             <h6>{{ row.photo_2_caption|smarty }}</h6>
         </div>
-        <p class="caption-label"><i class="fa fa-plus-circle"></i> <b>Caption</b></p>
         {% endif %}
     </div>
 </div>

@@ -12,14 +12,25 @@
     {% for chapter in COPY.chapters %}
     <div class="slide" data-anchor="{{ chapter.id }}" id="chapter-{{ chapter.id}}">
         <div class="chapter">
+            <h1>{{ chapter.title }}</h1>
+            <h2>{{ chapter.subtitle }}</h2>
             {{ render_file('%s.md' % chapter.id)|markdown|smarty }}
+
+            <div class="chapter-nav">
+                {% if loop.index0 > 0 %}
+                <h1>
+                    <a class="previous-chapter">Previous: {{ COPY.chapters[loop.index0 - 1].subtitle }}</a>
+                </h1>
+                {% endif %}
+                {% if loop.index < COPY.chapters|length  %}
+                <h1>
+                    <a class="next-chapter">Next: {{ COPY.chapters[loop.index].subtitle }}</a>
+                </h1>
+                {% endif %}
+            </div>
         </div>
     </div>
     {% endfor %}
-</div>
-<div class="primary-navigation" style="opacity:1;">
-    <div class="controlArrow prev"></div>
-    <div class="controlArrow next"></div>
 </div>
 {% endblock %}
 
