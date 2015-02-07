@@ -1,13 +1,18 @@
-{% extends '%s/templates/_slide.html' % slug %}
-{% block slide_content %}
-    <div class="look-branding">
-        <img src="assets/npr-logo.png">
-        <h5>Look At This</h5>
-    </div>
-    <h1>{{ row.text1|smarty }}</h1>
-    <h2>{{ row.text2|smarty }}</h2>
-    <h3>{{ COPY.post_metadata.author|smarty }}</h3>
-    <h4>{{ COPY.post_metadata.publish_date|smarty }}</h4>
+<div class="slide start" data-anchor="start" id="slide-start" data-bgimage="img/{{ COPY.story_metadata.start_background_media }}">
+    <div class="text full-block">
+        <div class="full-block-cell">
+            <div class="full-block-content">
+                <div class="look-branding">
+                    <img src="assets/npr-logo.png">
+                </div>
+                <h1>{{ COPY.story_metadata.title|smarty }}</h1>
+                <h2>{{ COPY.story_metadata.subtitle|smarty }}</h2>
+                <h3>{{ COPY.story_metadata.byline|smarty }}</h3>
+                <h4>{{ COPY.story_metadata.pubdate|smarty }}</h4>
+                <button class="btn btn-go">{{ COPY.story_metadata.start_text }}</button>
+            </div><!--full-block-content-->
+        </div><!--full-block-cell-->
+    </div><!--full-block-->
+</div><!--slide-->
 
-    <button class="btn btn-go">{{ row.text3 }}</button>
-{% endblock %}
+

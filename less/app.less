@@ -43,11 +43,11 @@
 @screen-tiny: ~"screen and (max-width: 480px)";
 
 body {
-    color: #fff;
+    color: #555;
     font-family: "Gotham SSm", helvetica, arial, sans-serif;
     font: 16px/1.5em "Gotham SSm", helvetica, arial, sans-serif;
     -webkit-font-smoothing: antialiased;
-    background-color: #111;
+    background-color: #fff;
 }
 
 h1,h2,h3,h4,h5,h6,p,ul,ol,li {
@@ -315,4 +315,81 @@ img {
          font-size: 12px;
          max-width: 1000px;
     }
+}
+
+.chapter {
+    padding-top: 60px;
+
+    & > p,
+    & > h1,
+    & > h2,
+    & > h3,
+    & > h4,
+    & > h5,
+    & > h6 {
+        max-width: 760px;
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: auto;
+        margin-right: auto;
+
+        @media @screen-small-above {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+    }
+
+    & > h1 {
+        font-size: 42px;
+        line-height: 1.1;
+        font-weight: bold;
+        margin-top: 100px;
+        margin-bottom: 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-align: center;
+        a {
+            display: block;
+            position: relative;
+            top: -50px;
+            visibility: hidden;
+        }
+        @media @screen-small-above {
+            margin-top: 100px;
+        }
+    }
+
+
+    & > h2 {
+        font-family: @font-family-serif;
+        font-style: italic;
+        margin-top: 0;
+        font-size: 15px;
+        font-weight: normal;
+        margin-bottom: 0;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    > p {
+        font-family: @font-family-serif;
+    }
+
+
+    .full-grid-wrapper,
+    .side-by-side-wrapper,
+    .metacaption
+    {
+        max-width: 790px;
+        margin-left: auto;
+        margin-right: auto;
+
+        &.wide {
+            max-width: 1140px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
 }

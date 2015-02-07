@@ -39,10 +39,9 @@ var resize = function() {
 };
 
 var setUpFullPage = function() {
-    //var anchors = ['_'];
-    var anchors = [];
-    for (var i = 0; i < COPY.nav.length; i++) {
-        anchors.push(COPY.nav[i].id);
+    var anchors = [''];
+    for (var i = 0; i < COPY.chapters.length; i++) {
+        anchors.push(COPY.chapters[i].id);
     }
     $.fn.fullpage({
         anchors: (!APP_CONFIG.DEPLOYMENT_TARGET) ? anchors : false,
