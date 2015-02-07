@@ -117,23 +117,25 @@ var loadImages = function($slide) {
 
     if ($w < 769) {
         prefix = 'mobile-';
-    } else {
-        prefix = 'desktop-';
     }
 
     if ($slide.data('bgimage')) {
+        if (!prefix) {
+            prefix = 'large-';
+        }
         var image_path = 'assets/img/' + prefix + $slide.data('bgimage');
-        console.log(image_path);
         if ($slide.css('background-image') === 'none') {
             $slide.css('background-image', 'url(' + image_path + ')');
         }
     }
 
+    if (!prefix) {
+        prefix = 'desktop-';
+    }
     var $images = $slide.find('img');
     if ($images.length > 0) {
         for (var i = 0; i < $images.length; i++) {
             var image_path = 'assets/img/' + prefix + $images.eq(i).data('image');
-            //console.log(image_path);
             $images.eq(i).attr('src', image_path);
         }
     }
