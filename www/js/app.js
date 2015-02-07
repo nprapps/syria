@@ -17,7 +17,6 @@ var h;
 var completion = 0;
 var arrowTest;
 var lastSlideExitEvent;
-var hammer;
 var firstRightArrowClicked = false;
 
 var resize = function() {
@@ -330,7 +329,6 @@ $(document).ready(function() {
     setUpFullPage();
     resize();
 
-    arrowTest = determineArrowTest();
     // Redraw slides if the window resizes
     window.addEventListener("deviceorientation", resize, true);
     $(window).resize(resize);
