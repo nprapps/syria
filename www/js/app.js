@@ -49,9 +49,11 @@ var setUpFullPage = function() {
     for (var i = 0; i < COPY.chapters.length; i++) {
         anchors.push(COPY.chapters[i].id);
     }
-    $.fn.fullpage({
+    console.log('hi');
+    $('.section').fullpage({
         anchors: anchors,
-        autoScrolling: false,
+        //autoScrolling: false,
+        scrollOverflow: true,
         keyboardScrolling: false,
         verticalCentered: false,
         fixedElements: '.primary-navigation, #share-modal',
