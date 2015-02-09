@@ -130,8 +130,10 @@ var loadImages = function($slide) {
     var $images = $slide.find('img');
     if ($images.length > 0) {
         for (var i = 0; i < $images.length; i++) {
-            var image_path = 'assets/img/' + prefix + $images.eq(i).data('image');
-            $images.eq(i).attr('src', image_path);
+            if ($images.eq(i).data('image')) {
+                var image_path = 'assets/img/' + prefix + $images.eq(i).data('image');
+                $images.eq(i).attr('src', image_path);
+            }
         }
     }
 };
