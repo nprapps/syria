@@ -9,7 +9,6 @@ var $previousChapter;
 var $startCardButton;
 var $startAnchor;
 var isTouch = Modernizr.touch;
-var mobileSuffix;
 var aspectWidth = 16;
 var aspectHeight = 9;
 var optimalWidth;
@@ -107,10 +106,6 @@ var setSlidesForLazyLoading = function(slideIndex) {
         $slides.eq(slideIndex),
         $slides.eq(slideIndex + 1),
     ];
-
-    // Mobile suffix should be blank by default.
-    mobileSuffix = '';
-
 
     for (var i = 0; i < slides.length; i++) {
         loadImages(slides[i]);
