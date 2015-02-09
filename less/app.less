@@ -335,56 +335,57 @@ img {
         }
     }
 }
-    .metacaption {
+
+.metacaption {
+    .make-md-column(12);
+}
+
+.full-grid-wrapper {
+    .make-row();
+
+    margin: 60px 0 60px 0;
+
+    .full-grid {
         .make-md-column(12);
     }
 
-    .full-grid-wrapper {
-        .make-row();
+    @media @screen-small {
+        margin: 10px 0;
+    }
+}
 
-        margin: 60px 0 60px 0;
+// 2x1
+.side-by-side-wrapper {
+    .make-row();
 
-        .full-grid {
-            .make-md-column(12);
+    margin: 0;
+    @media @screen-small-above { margin-bottom: 30px; }
+
+    div {
+        margin-bottom: 0;
+
+        &:first-child { margin-bottom: 10px; }
+    }
+
+    @media @screen-medium-above {
+        div:first-child {
+          margin-bottom: 0;
         }
+        .captioned .caption-text,
+        .metacaption .caption-text {
+            h6 { padding-bottom: 30px; }
+        }
+    }
+    .fluidbox div {margin-bottom: 0;}
 
-        @media @screen-small {
-            margin: 10px 0;
+    @media @screen-medium-above {
+        .captioned .caption-text,
+        .metacaption .caption-text {
+            h6 { padding-bottom: 0; }
         }
     }
 
-    // 2x1
-    .side-by-side-wrapper {
-        .make-row();
-
-        margin: 0;
-        @media @screen-small-above { margin-bottom: 30px; }
-
-        div {
-            margin-bottom: 0;
-
-            &:first-child { margin-bottom: 10px; }
-        }
-
-        @media @screen-medium-above {
-            div:first-child {
-              margin-bottom: 0;
-            }
-            .captioned .caption-text,
-            .metacaption .caption-text {
-                h6 { padding-bottom: 30px; }
-            }
-        }
-        .fluidbox div {margin-bottom: 0;}
-
-        @media @screen-medium-above {
-            .captioned .caption-text,
-            .metacaption .caption-text {
-                h6 { padding-bottom: 0; }
-            }
-        }
-
-        .side-by-side {
-            .make-md-column(6);
-        }
+    .side-by-side {
+        .make-md-column(6);
     }
+}
