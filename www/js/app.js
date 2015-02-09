@@ -3,9 +3,11 @@ var $upNext = null;
 var $w;
 var $h;
 var $slides;
+var $start;
 var $nextChapter;
 var $previousChapter;
 var $startCardButton;
+var $startAnchor;
 var isTouch = Modernizr.touch;
 var mobileSuffix;
 var aspectWidth = 16;
@@ -33,7 +35,15 @@ var resize = function() {
         w = optimalWidth;
         h = $h;
     }
+
+    resizeTitleCard();
 };
+
+var resizeTitleCard = function() {
+    $start.height($h);
+    var image_path = 'assets/img/' + $start.data('bgimage');
+    $start.css('background-image', 'url(' + image_path + ')');
+}
 
 var setUpFullPage = function() {
     var anchors = ['_'];
@@ -110,23 +120,13 @@ var setSlidesForLazyLoading = function(slideIndex) {
 
 var loadImages = function($slide) {
     /*
-    * Sets the background image on a div for our fancy slides.
+    * Lazy load images.
     */
     var prefix;
     var image_path;
 
     if ($w < 769) {
         prefix = 'mobile-';
-    }
-
-    if ($slide.data('bgimage')) {
-        if (!prefix) {
-            prefix = 'large-';
-        }
-        var image_path = 'assets/img/' + prefix + $slide.data('bgimage');
-        if ($slide.css('background-image') === 'none') {
-            $slide.css('background-image', 'url(' + image_path + ')');
-        }
     }
 
     if (!prefix) {
@@ -148,7 +148,10 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
 
 var onStartCardButtonClick = function() {
     lastSlideExitEvent = 'go';
-    $.fn.fullpage.moveSlideRight();
+    $.smoothScroll({
+        scrollElement: $slides.eq(0),
+        scrollTarget: $startAnchor
+    });
 }
 
 var onNextChapterClick = function() {
@@ -197,8 +200,10 @@ $(document).ready(function() {
     $h = $(window).height();
 
     $slides = $('.slide');
+    $start = $('.start');
     $navButton = $('.primary-navigation-btn');
     $startCardButton = $('.btn-go');
+    $startAnchor = $('#start-anchor');
     $nextChapter = $('.next-chapter');
     $previousChapter = $('.previous-chapter');
     $upNext = $('.up-next');

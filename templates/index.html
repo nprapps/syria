@@ -7,10 +7,15 @@
 {% block content %}
 
 <div class="section">
-    {% include "slides/start.html" %}
     
     {% for chapter in COPY.chapters %}
     <div class="slide" data-anchor="{{ chapter.id }}" id="chapter-{{ chapter.id}}">
+
+        {% if loop.index0 == 0 %}
+        {% include "start.html" %}
+        <a id="start-anchor"></a>
+        {% endif %}
+
         <div class="chapter">
             <h1>{{ chapter.title }}</h1>
             <h2>{{ chapter.subtitle }}</h2>
