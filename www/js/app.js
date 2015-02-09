@@ -41,7 +41,7 @@ var setUpFullPage = function() {
         anchors.push(COPY.chapters[i].id);
     }
     $.fn.fullpage({
-        anchors: true,
+        anchors: anchors,
         autoScrolling: false,
         keyboardScrolling: false,
         verticalCentered: false,
