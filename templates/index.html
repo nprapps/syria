@@ -24,8 +24,9 @@
             <div class="chapter-nav">
                 {% if loop.index < COPY.chapters|length  %}
                 <h1>
-                    <a class="next-chapter">Next: {{ COPY.chapters[loop.index].subtitle }}</a>
+                    <a class="next-chapter">{{ COPY.chapters[loop.index].pullquote }}</a>
                 </h1>
+                <h2>—{{ COPY.chapters[loop.index].source }}</h2>
                 {% endif %}
             </div>
         </div>
