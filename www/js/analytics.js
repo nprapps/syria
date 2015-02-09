@@ -18,10 +18,10 @@ var ANALYTICS = (function () {
      * Google Analytics
      */
     var setupGoogle = function() {
-        _gaq.push(['_setAccount', APP_CONFIG.PROJECT_GOOGLE_ANALYTICS.ACCOUNT_ID]);
-        _gaq.push(['_setDomainName', APP_CONFIG.PROJECT_GOOGLE_ANALYTICS.DOMAIN]);
+        _gaq.push(['_setAccount', APP_CONFIG.GOOGLE_ANALYTICS.ACCOUNT_ID]);
+        _gaq.push(['_setDomainName', APP_CONFIG.GOOGLE_ANALYTICS.DOMAIN]);
         //_gaq.push(['_setCustomVar', 1, 'BC', '', 3]);
-        _gaq.push(['_setCustomVar', 2, 'Topics', APP_CONFIG.GOOGLE_ANALYTICS_TOPICS, 3]);
+        _gaq.push(['_setCustomVar', 2, 'Topics', APP_CONFIG.GOOGLE_ANALYTICS.TOPICS, 3]);
         //_gaq.push(['_setCustomVar', 3, 'Program ID', '', 3]);
         //_gaq.push(['_setCustomVar', 3, 'Localization', '', 1]);
         _gaq.push(['_setCustomVar', 4, 'OrgID', '1', 3]);
@@ -137,7 +137,7 @@ var ANALYTICS = (function () {
      * Event tracking.
      */
     var trackEvent = function(eventName, label, value, custom1, custom2) {
-        var args = ['_trackEvent', APP_CONFIG.DEPLOY_SLUG];
+        var args = ['_trackEvent', APP_CONFIG.PROJECT_SLUG];
 
         args.push(eventName);
 

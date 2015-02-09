@@ -126,6 +126,11 @@ DISQUS_API_KEY = 'tIbSzEhGBE9NIptbnQWn4wy1gZ546CsQ2IHHtxJiYAceyyPoAkDkVnQfCifmCa
 DISQUS_UUID = 'a8a24d35-a7f8-11e4-a4fd-80e6500ab74c'
 
 """
+ANALYTICS
+"""
+NUM_SLIDES_AFTER_CONTENT = 0
+
+"""
 Utilities
 """
 def get_secrets():
