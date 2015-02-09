@@ -22,11 +22,6 @@
             {{ render_file('%s.md' % chapter.id)|markdown|smarty }}
 
             <div class="chapter-nav">
-                {% if loop.index0 > 0 %}
-                <h1>
-                    <a class="previous-chapter">Previous: {{ COPY.chapters[loop.index0 - 1].subtitle }}</a>
-                </h1>
-                {% endif %}
                 {% if loop.index < COPY.chapters|length  %}
                 <h1>
                     <a class="next-chapter">Next: {{ COPY.chapters[loop.index].subtitle }}</a>
