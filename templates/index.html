@@ -12,12 +12,14 @@
         {% include "start.html" %}
         <a id="start-anchor"></a>
         {% endif %}
-        
+
+        {% if loop.index0 != 0 %}
         <ul class="nav nav-pills">
             {% for nav_chapter in COPY.chapters %}
             <li><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
             {% endfor %}
         </ul>
+        {% endif %}
 
         <div class="chapter">
             <h1>{{ chapter.title }}</h1>
