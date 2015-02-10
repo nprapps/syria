@@ -4,25 +4,26 @@
 {% block content %}
 
 <div class="section">
-    {% include "slides/start.html" %}
     
     {% for chapter in COPY.chapters %}
     <div class="slide" data-anchor="{{ chapter.id }}" id="chapter-{{ chapter.id}}">
+
+        {% if loop.index0 == 0 %}
+        {% include "start.html" %}
+        <a id="start-anchor"></a>
+        {% endif %}
+
         <div class="chapter">
             <h1>{{ chapter.title }}</h1>
             <h2>{{ chapter.subtitle }}</h2>
             {{ render_file('%s.md' % chapter.id)|markdown|smarty }}
 
             <div class="chapter-nav">
-                {% if loop.index0 > 0 %}
-                <h1>
-                    <a class="previous-chapter">Previous: {{ COPY.chapters[loop.index0 - 1].subtitle }}</a>
-                </h1>
-                {% endif %}
                 {% if loop.index < COPY.chapters|length  %}
                 <h1>
-                    <a class="next-chapter">Next: {{ COPY.chapters[loop.index].subtitle }}</a>
+                    <a class="next-chapter">{{ COPY.chapters[loop.index].pullquote }}</a>
                 </h1>
+                <h2>—{{ COPY.chapters[loop.index].source }}</h2>
                 {% endif %}
             </div>
         </div>
