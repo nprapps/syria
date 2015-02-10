@@ -15,7 +15,7 @@
         
         <ul class="nav nav-pills">
             {% for nav_chapter in COPY.chapters %}
-            <li>{{ nav_chapter.title}}</li>
+            <li><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
             {% endfor %}
         </ul>
 
