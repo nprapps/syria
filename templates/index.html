@@ -16,7 +16,7 @@
         {% if loop.index0 != 0 %}
         <ul class="nav nav-pills">
             {% for nav_chapter in COPY.chapters %}
-            <li><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
+            <li {% if chapter.id == nav_chapter.id %}class="active"{% endif %}><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
             {% endfor %}
         </ul>
         {% endif %}
