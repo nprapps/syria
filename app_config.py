@@ -15,10 +15,10 @@ NAMES
 """
 # Project name to be used in urls
 # Use dashes, not underscores!
-PROJECT_SLUG = 'syria-chapters'
+PROJECT_SLUG = 'syria'
 
 # Project name to be used in file paths
-PROJECT_FILENAME = 'syria-chapters'
+PROJECT_FILENAME = 'syria'
 
 # The name of the repository containing the source
 REPOSITORY_NAME = 'syria'
