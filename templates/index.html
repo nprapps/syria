@@ -12,6 +12,12 @@
         {% include "start.html" %}
         <a id="start-anchor"></a>
         {% endif %}
+        
+        <ul>
+            {% for nav_chapter in COPY.chapters %}
+            <li>{{ nav_chapter.title}}</li>
+            {% endfor %}
+        </ul>
 
         <div class="chapter">
             <h1>{{ chapter.title }}</h1>
