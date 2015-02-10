@@ -8,7 +8,7 @@ from glob import glob
 import os
 
 import boto
-from fabric.api import prompt, task
+from fabric.api import prompt, task, local
 import app_config
 from fnmatch import fnmatch
 import utils
@@ -174,6 +174,13 @@ def rm(path):
             key = bucket.get_key(key_name)
 
             _assets_delete(local_path, key)
+
+@task
+def crunch():
+    """
+    Creates large, desktop and mobile versions of images.
+    """
+    local('./crunch_images.sh')
 
 def _assets_get_bucket():
     """
