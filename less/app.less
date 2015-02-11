@@ -331,38 +331,53 @@ img {
         font-family: @font-family-serif;
         margin-bottom: 1.2em;
     }
+    
     .chapter-nav {
+        h2 { 
+            font: 700 normal 18px "Gotham SSm", helvetica, arial, sans-serif;
+            text-align: left;
+            padding: 33px 0;
+            
+            span {
+                text-transform: uppercase;
+                color: #999;
+                padding-right: 5px;
+            }
+            
+            b {
+                font-weight: 700;
+                font-size: 120%;
+            }
+
+            a:hover {
+                text-decoration: none;
+                color: #2A6496;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .final-nav {
         margin-top: 66px;
         background-color: #f1f1f1;
         padding: 66px 20px;
         max-width: none;
-
-        h1 {
-            text-transform: none;
-            font-size: 26px;
-            line-height: 1.4;
-            font-weight: 400;
-            text-align: left;
-            text-indent: -.4em;
-            max-width: 730px;
-            margin: 0 auto;
-
-//            font-family: @font-family-serif;
-//            font-style: italic;
-            letter-spacing: 0;
-
-
-            a {
-                color: rgb(85, 85, 85);
+        
+        a {
+            display: block;
+        
+            &:hover { 
                 text-decoration: none;
+                cursor: pointer;
             }
         }
+
         h2 {
             font-size: 20px;
             text-align: left;
             max-width: 730px;
             margin: 22px auto 0 auto;
-            color: #666;
+            opacity: .5;
         }
     }
 

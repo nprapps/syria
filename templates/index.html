@@ -27,14 +27,16 @@
             <h2>{{ chapter.subtitle }}</h2>
             {{ render_file('%s.md' % chapter.id)|markdown|smarty }}
 
+            {% if loop.index < COPY.chapters|length  %}
             <div class="chapter-nav">
-                {% if loop.index < COPY.chapters|length  %}
-                <h1>
-                    <a class="next-chapter">{{ COPY.chapters[loop.index].pullquote }}</a>
-                </h1>
-                <h2>—{{ COPY.chapters[loop.index].source }}</h2>
-                {% endif %}
+                <h2><a class="next-chapter"><span>Next:</span> {{ COPY.chapters[loop.index].call_to_action }} <b>&rsaquo;</b></a></h2>
             </div>
+            {% else %}
+            <div class="final-nav">
+                tktktk
+            </div>
+            {% endif %}
+
         </div>
     </div>
     {% endfor %}
