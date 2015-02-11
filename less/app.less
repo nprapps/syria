@@ -329,7 +329,7 @@ img {
 
     > p {
         font-family: @font-family-serif;
-        margin-bottom: 1.2em;
+        margin-bottom: 22px;
     }
     
     .chapter-nav {
@@ -398,7 +398,7 @@ img {
 .full-grid-wrapper {
     .make-row();
 
-    margin: 60px 0 60px 0;
+    padding: 22px 0 44px 0;
 
     .full-grid {
         .make-md-column(12);
@@ -414,7 +414,11 @@ img {
     .make-row();
 
     margin: 0;
-    @media @screen-small-above { margin-bottom: 30px; }
+
+    @media @screen-small-above { 
+        padding-top: 22px;
+        padding-bottom: 44px;
+    }
 
     div {
         margin-bottom: 0;
@@ -443,4 +447,11 @@ img {
     .side-by-side {
         .make-md-column(6);
     }
+}
+
+.side-by-side-wrapper + .full-grid-wrapper,
+.full-grid-wrapper + .side-by-side-wrapper,
+.full-grid-wrapper + .full-grid-wrapper,
+.side-by-side-wrapper + .side-by-side-wrapper {
+    margin-top: -33px;
 }
