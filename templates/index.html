@@ -52,7 +52,9 @@
                     </div>
                     <div class="credits">
                         <h3>{{ COPY.story_metadata.credits_hed }}</h3>
+                        {{ COPY.story_metadata.credits_partner }}
                         {{ COPY.story_metadata.credits_text }}
+                        <p>Data sources: {{ COPY.syria_labels.source }}</p>
 
                         <p><em>{{ COPY.story_metadata.pubdate|smarty }}</em></p>
                     </div>
