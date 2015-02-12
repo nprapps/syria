@@ -36,7 +36,18 @@
             </div>
             {% else %}
             <div class="final-nav">
-                tktktk
+                <div class="related-stories">
+                    <h3>{{ COPY.story_metadata.related_hed }}</h3>
+                    <ul>
+                    {% for story in COPY.footer_stories %}
+                        <li><a href="{{ story.link }}">{{ story.headline }}</a> <span class="date">({{ story.date }})</span></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <div class="credits">
+                    <h3>{{ COPY.story_metadata.credits_hed }}</h3>
+                    {{ COPY.story_metadata.credits_text }}
+                </div>
             </div>
             {% endif %}
 
