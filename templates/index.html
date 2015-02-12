@@ -16,7 +16,8 @@
         <div class="chapter">
 
             {% if loop.index0 != 0 %}
-            <ul class="nav nav-pills">
+            <ul class="top-nav nav nav-pills">
+                <li class="title">{{ COPY.story_metadata.title }}</li>
                 {% for nav_chapter in COPY.chapters %}
                 <li {% if chapter.id == nav_chapter.id %}class="active"{% endif %}><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
                 {% endfor %}
