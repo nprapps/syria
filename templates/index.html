@@ -17,9 +17,8 @@
 
             {% if loop.index0 != 0 %}
             <ul class="top-nav nav nav-pills">
-                <li class="title">{{ COPY.story_metadata.title }}</li>
                 {% for nav_chapter in COPY.chapters %}
-                <li {% if chapter.id == nav_chapter.id %}class="active"{% endif %}><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
+                <li class="{% if chapter.id == nav_chapter.id %}active{% endif %}{% if nav_chapter.id == 'intro' %} title{% endif %}"><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
                 {% endfor %}
             </ul>
             {% endif %}
@@ -30,12 +29,24 @@
 
             {% if loop.index < COPY.chapters|length  %}
             <div class="chapter-nav">
-                <h2><a class="next-chapter"><span>Next</span> {{ COPY.chapters[loop.index].call_to_action }}</a></h2>
+                <h2><a class="next-chapter">
+                    <span>Next</span>
+                    {{ COPY.chapters[loop.index].call_to_action }}
+                    <span>Part {{ loop.index + 1 }} (of {{ COPY.chapters|length }})</span>
+                </a></h2>
             </div>
             {% else %}
             <div class="final-nav">
                 tktktk
             </div>
+            {% endif %}
+
+            {% if loop.index < COPY.chapters|length  %}
+            <ul class="bot-nav nav nav-pills">
+                {% for nav_chapter in COPY.chapters %}
+                <li class="{% if chapter.id == nav_chapter.id %}active{% endif %}{% if nav_chapter.id == 'intro' %} title{% endif %}"><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
+                {% endfor %}
+            </ul>
             {% endif %}
 
         </div>
