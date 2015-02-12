@@ -32,7 +32,6 @@
                 <h2><a class="next-chapter">
                     <span>Next</span>
                     {{ COPY.chapters[loop.index].call_to_action }}
-                    <span>Part {{ loop.index + 1 }} (of {{ COPY.chapters|length }})</span>
                 </a></h2>
             </div>
             {% else %}
@@ -41,13 +40,11 @@
             </div>
             {% endif %}
 
-            {% if loop.index < COPY.chapters|length  %}
             <ul class="bot-nav nav nav-pills">
                 {% for nav_chapter in COPY.chapters %}
                 <li class="{% if chapter.id == nav_chapter.id %}active{% endif %}{% if nav_chapter.id == 'intro' %} title{% endif %}"><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
                 {% endfor %}
             </ul>
-            {% endif %}
 
         </div>
     </div>

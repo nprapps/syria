@@ -334,22 +334,33 @@ img {
     .bot-nav {
         text-align: center;
         max-width: none;
+        padding-top: 11px;
+        @media @screen-small-above {
+            padding-top: 0;
+        }
 
         > li {
-            font-size: 14px;
             -moz-user-select: none;
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
             display: inline-block;
             float: none;
+            font-size: 12px;
+            @media @screen-small-above {
+                font-size: 14px;
+            }
         
             > a {
                 margin-left: 11px;
                 margin-right: 11px;
-                padding: 22px 0 6px 0;
                 color: #ccc;
                 border-radius: 0;
+                padding: 6px 0 2px 0;
+                @media @screen-small-above {
+                    padding-top: 22px;
+                    padding-bottom: 6px;
+                }
                 
                 &:hover,
                 &:active {
@@ -377,11 +388,21 @@ img {
         }
     }
     .bot-nav {
+        padding-bottom: 11px;
+        @media @screen-small-above {
+            padding-bottom: 0;
+        }
+
         > li > a {
-            padding: 6px 0 22px 0;
+            color: #bababa;
+            padding-top: 2px;
+            padding-bottom: 6px;
+            @media @screen-small-above {
+                padding: 6px 0 11px 0;
+            }
         }
         > li.active > a {
-            border-top: 2px solid #eee;
+            border-top: 2px solid #ccc;
             border-bottom: none;
         }
     }
@@ -397,7 +418,6 @@ img {
                 color: #999;
                 display: block;
                 font-size: 12px;
-                margin-top: 3px;
                 margin-bottom: 3px;
             }
             
