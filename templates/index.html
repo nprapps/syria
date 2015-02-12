@@ -29,35 +29,57 @@
             
             {{ render_file('%s.md' % chapter.id)|markdown|smarty }}
 
-            {% if loop.index < COPY.chapters|length  %}
-            <div class="chapter-nav">
-                <h2><a class="next-chapter">
-                    <span>Next</span>
-                    {{ COPY.chapters[loop.index].call_to_action }}
-                </a></h2>
-            </div>
-            {% else %}
-            <div class="final-nav">
-                <div class="related-stories">
-                    <h3>{{ COPY.story_metadata.related_hed }}</h3>
-                    <ul>
-                    {% for story in COPY.footer_stories %}
-                        <li><a href="{{ story.link }}">{{ story.headline }}</a> <span class="date">({{ story.date }})</span></li>
-                    {% endfor %}
-                    </ul>
+            {% if loop.index < COPY.chapters|length %}
+                <div class="chapter-nav">
+                    <h2><a class="next-chapter">
+                        <span>Next</span>
+                        {{ COPY.chapters[loop.index].call_to_action }}
+                    </a></h2>
                 </div>
-                <div class="credits">
-                    <h3>{{ COPY.story_metadata.credits_hed }}</h3>
-                    {{ COPY.story_metadata.credits_text }}
-                </div>
-            </div>
-            {% endif %}
 
-            <ul class="bot-nav nav nav-pills">
-                {% for nav_chapter in COPY.chapters %}
-                <li class="{% if chapter.id == nav_chapter.id %}active{% endif %}{% if nav_chapter.id == 'intro' %} title{% endif %}"><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
-                {% endfor %}
-            </ul>
+                <ul class="bot-nav nav nav-pills">
+                    {% for nav_chapter in COPY.chapters %}
+                    <li class="{% if chapter.id == nav_chapter.id %}active{% endif %}{% if nav_chapter.id == 'intro' %} title{% endif %}"><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="final-nav">
+                    <div class="related-stories">
+                        <h3>{{ COPY.story_metadata.related_hed }}</h3>
+                        {% for story in COPY.footer_stories %}
+                        <p><a href="{{ story.link }}">{{ story.headline }}</a> <span class="date">({{ story.date }})</span></p>
+                        {% endfor %}
+                    </div>
+                    <div class="credits">
+                        <h3>{{ COPY.story_metadata.credits_hed }}</h3>
+                        {{ COPY.story_metadata.credits_text }}
+
+                        <p><em>{{ COPY.story_metadata.pubdate|smarty }}</em></p>
+                    </div>
+                </div>
+                <footer>
+                    <div class="primary">
+                        <ul>
+                            <li><a href="http://www.npr.org" data-action="Click Logo"><img src="http://media.npr.org/chrome/news/nprlogo_138x46.gif" alt="NPR Logo"></a></li>
+                            <li class="news"><a href="http://www.npr.org/sections/news/">News</a></li>
+                            <li class="artslife"><a href="http://www.npr.org/sections/arts/">Arts &amp; Life</a></li>
+                            <li class="music"><a href="http://www.npr.org/music/">Music</a></li>
+                            <li class="programs"><a href="http://www.npr.org/programs/">Programs</a></li>
+                            <li class="listen"><a href="http://www.npr.org/listen/">Listen</a></li>
+                            <li class="about"><a href="http://www.npr.org/about/">About</a></li>
+                        </ul>
+                    </div>
+                    <div class="secondary">
+                        <p>©2014 NPR</p>
+                        <ul>
+                            <li id="footerContact"><a href="http://help.npr.org/npr/includes/customer/npr/custforms/contactus.aspx">Contact</a></li>
+                            <li><a href="http://www.npr.org/about/termsofuse.html">Terms of Use</a></li>
+                            <li><a href="http://www.npr.org/about/privacypolicy.html">Privacy</a></li>
+                            <li><a href="http://thin.npr.org/">Text-Only</a></li>
+                        </ul>
+                    </div>
+                </footer>
+            {% endif  %}
 
         </div>
     </div>
