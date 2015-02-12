@@ -23,8 +23,10 @@
             </ul>
             {% endif %}
 
-            <h1>{{ chapter.title }}</h1>
-            <h2>{{ chapter.subtitle }}</h2>
+            {% if loop.index0 != 0 %}
+                <h1>In {{ chapter.title }},</h1>
+            {% endif %}
+            
             {{ render_file('%s.md' % chapter.id)|markdown|smarty }}
 
             {% if loop.index < COPY.chapters|length  %}
