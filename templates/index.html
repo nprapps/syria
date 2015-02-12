@@ -13,8 +13,8 @@
         <a id="start-anchor"></a>
         {% endif %}
 
-        <div class="chapter">
-
+        <div class="chapter {{ chapter.id }}">
+        
             {% if loop.index0 != 0 %}
             <ul class="top-nav nav nav-pills">
                 {% for nav_chapter in COPY.chapters %}
