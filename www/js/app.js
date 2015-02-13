@@ -157,13 +157,8 @@ var onStartCardButtonClick = function() {
 }
 
 var onNextChapterClick = function() {
-    lastSlideExitEvent = 'next-chapter';
+    lastSlideExitEvent = 'next-chapter-click';
     $.fn.fullpage.moveSlideRight();
-}
-
-var onPreviousChapterClick = function() {
-    lastSlideExitEvent = 'previous-chapter';
-    $.fn.fullpage.moveSlideLeft();
 }
 
 var onNextPostClick = function(e) {
@@ -227,7 +222,6 @@ $(document).ready(function() {
     $startCardButton = $('.btn-go');
     $startAnchor = $('#start-anchor');
     $nextChapter = $('.next-chapter');
-    $previousChapter = $('.previous-chapter');
     $upNext = $('.up-next');
     $shareModal = $('#share-modal');
 
