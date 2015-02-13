@@ -8,6 +8,7 @@ var $nextChapter;
 var $previousChapter;
 var $startCardButton;
 var $startAnchor;
+var $shareModal;
 var isTouch = Modernizr.touch;
 var aspectWidth = 16;
 var aspectHeight = 9;
@@ -17,6 +18,7 @@ var w;
 var h;
 var completion = 0;
 var lastSlideExitEvent;
+var firstShareLoad = true;
 
 var resize = function() {
     $w = $(window).width();
@@ -173,6 +175,26 @@ var onNextPostClick = function(e) {
 }
 
 /*
+ * Share modal opened.
+ */
+var onShareModalShown = function(e) {
+    ANALYTICS.openShareDiscuss();
+
+    if (firstShareLoad) {
+        loadComments();
+
+        firstShareLoad = false;
+    }
+}
+
+/*
+ * Share modal closed.
+ */
+var onShareModalHidden = function(e) {
+    ANALYTICS.closeShareDiscuss();
+}
+
+/*
  * Text copied to clipboard.
  */
 var onClippyCopy = function(e) {
@@ -207,6 +229,11 @@ $(document).ready(function() {
     $nextChapter = $('.next-chapter');
     $previousChapter = $('.previous-chapter');
     $upNext = $('.up-next');
+    $shareModal = $('#share-modal');
+
+    // Bind events
+    $shareModal.on('shown.bs.modal', onShareModalShown);
+    $shareModal.on('hidden.bs.modal', onShareModalHidden);
 
     $startCardButton.on('click', onStartCardButtonClick);
     $upNext.on('click', onNextPostClick);
