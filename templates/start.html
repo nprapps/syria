@@ -6,9 +6,11 @@
                     <img src="assets/img/npr-logo.png" alt="NPR" class="logo-npr" />
                     <img src="assets/img/pulitzer-center-logo.svg" alt="Pulitzer Center" class="logo-pulitzer">
                 </div>
+                <h3>{{ COPY.story_metadata.byline|smarty }}</h3>
+
                 <h1>{{ COPY.story_metadata.title|smarty }}</h1>
                 <h2>{{ COPY.story_metadata.subtitle|smarty }}</h2>
-                <h3>{{ COPY.story_metadata.byline|smarty }}</h3>
+
                 <button class="btn btn-go">{{ COPY.story_metadata.start_text }}</button>
             </div>
         </div>
