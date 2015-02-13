@@ -4,8 +4,8 @@
 * Fonts: To use FontAwesome, uncomment font-awesome, comment out the custom font,
 * and tweak the controlArrow CSS rules later in this file.
 */
-/*@import "./lib/lookatthis-font.less";
-@import "./lib/font-awesome/font-awesome"; */
+// *@import "./lib/lookatthis-font.less";
+@import "./lib/font-awesome/font-awesome";
 
 @import "./lib/prefixer";
 @import "./share-modal.less";
@@ -673,4 +673,26 @@ footer {
 .full-grid-wrapper + .full-grid-wrapper,
 .side-by-side-wrapper + .side-by-side-wrapper {
     margin-top: -33px;
+}
+
+
+// share button
+.share-wrapper {
+    text-align: center;
+    padding-bottom: @line-height-computed * 2;
+}
+
+.share.btn {
+    .border-radius(0);
+    text-transform: uppercase;
+
+    i {
+        margin-left: 10px;
+    }
+
+    &:hover {
+        background: @link-color;
+        color: #fff;
+        border-color: @link-color;
+    }
 }
