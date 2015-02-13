@@ -9,6 +9,8 @@ var $previousChapter;
 var $startCardButton;
 var $startAnchor;
 var $shareModal;
+var $topChapterNavLinks;
+var $bottomChapterNavLinks;
 var isTouch = Modernizr.touch;
 var aspectWidth = 16;
 var aspectHeight = 9;
@@ -144,8 +146,10 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     // Reset scroll
     $slides.eq(slideIndex).scrollTop(0);
 
-    // Log time on slide
-    ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent);
+    if (lastSlideExitEvent) {
+        // Log time on slide
+        ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent);
+    }
 }
 
 var onStartCardButtonClick = function() {
@@ -159,6 +163,14 @@ var onStartCardButtonClick = function() {
 var onNextChapterClick = function() {
     lastSlideExitEvent = 'next-chapter-click';
     $.fn.fullpage.moveSlideRight();
+}
+
+var onTopChapterNavLinkClink = function(e) {
+    lastSlideExitEvent = 'top-chapter-nav-click';
+}
+
+var onBottomChapterNavLinkClink = function(e) {
+    lastSlideExitEvent = 'bottom-chapter-nav-click';
 }
 
 var onNextPostClick = function(e) {
@@ -222,6 +234,8 @@ $(document).ready(function() {
     $startCardButton = $('.btn-go');
     $startAnchor = $('#start-anchor');
     $nextChapter = $('.next-chapter');
+    $topChapterNavLinks = $('.top-chapter-nav-link');
+    $bottomChapterNavLinks = $('.bottom-chapter-nav-link');
     $upNext = $('.up-next');
     $shareModal = $('#share-modal');
 
@@ -232,7 +246,8 @@ $(document).ready(function() {
     $startCardButton.on('click', onStartCardButtonClick);
     $upNext.on('click', onNextPostClick);
     $nextChapter.on('click', onNextChapterClick);
-    $previousChapter.on('click', onPreviousChapterClick);
+    $topChapterNavLinks.on('click', onTopChapterNavLinkClink);
+    $bottomChapterNavLinks.on('click', onBottomChapterNavLinkClink);
 
     ZeroClipboard.config({ swfPath: 'js/lib/ZeroClipboard.swf' });
     var clippy = new ZeroClipboard($(".clippy"));
