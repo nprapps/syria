@@ -138,6 +138,11 @@ var loadImages = function($slide) {
 
 var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     // Called when leaving a slide.
+
+    // Reset scroll
+    $slides.eq(slideIndex).scrollTop(0);
+
+    // Log time on slide
     ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent);
 }
 
