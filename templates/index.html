@@ -18,7 +18,7 @@
             {% if loop.index0 != 0 %}
             <ul class="top-nav nav nav-pills">
                 {% for nav_chapter in COPY.chapters %}
-                <li class="{% if chapter.id == nav_chapter.id %}active {% endif %}{% if nav_chapter.id == 'intro' %}title{% endif %}"><a href="#_/{{nav_chapter.id}}" class="chapter-nav-link">{{ nav_chapter.title}}</a></li>
+                <li class="{% if chapter.id == nav_chapter.id %}active {% endif %}{% if nav_chapter.id == 'intro' %}title{% endif %}"><a href="#_/{{nav_chapter.id}}" class="top-chapter-nav-link">{{ nav_chapter.title}}</a></li>
                 {% endfor %}
             </ul>
             {% endif %}
@@ -39,7 +39,7 @@
 
                 <ul class="bot-nav nav nav-pills">
                     {% for nav_chapter in COPY.chapters %}
-                    <li class="{% if chapter.id == nav_chapter.id %}active{% endif %}{% if nav_chapter.id == 'intro' %} title{% endif %}"><a href="#_/{{nav_chapter.id}}">{{ nav_chapter.title}}</a></li>
+                    <li class="{% if chapter.id == nav_chapter.id %}active{% endif %}{% if nav_chapter.id == 'intro' %} title{% endif %}"><a href="#_/{{nav_chapter.id}}" class="bottom-chapter-nav-link">{{ nav_chapter.title}}</a></li>
                     {% endfor %}
                 </ul>
             {% else %}
