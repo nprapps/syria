@@ -674,6 +674,63 @@ footer {
     }
 }
 
+// refugee tally graphic
+#tally {
+    margin-bottom: 22px;
+    font-size: 12px;
+    
+    @media @screen-tiny-above {
+        display: table;
+        width: 100%;
+        
+        .col {
+            display: table-cell;
+            vertical-align: top;
+            width: 50%;
+
+            &:nth-child(1) { 
+                padding-right: 22px;
+                border-right: 1px solid #eee;
+            }
+            &:nth-child(2) { padding-left: 22px; }
+        }
+    }
+    @media @screen-tiny {
+        font-size: 11px;
+        
+        table.mideast { margin-bottom: 33px; }
+    }
+
+    table {
+        border-collapse: collapse;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        color: #666;
+        
+        &.syria { margin-bottom: 33px; }
+
+        caption {
+            text-align: left;
+            font-weight: 700;
+            font-size: 12px;
+            color: #666;
+            margin: 0 0 7px 0;
+        }
+
+        td {
+            border-top: 1px solid #eee;
+            vertical-align: top;
+            padding: 7px 0;
+            text-align: right;
+            
+            &:nth-child(1) {
+                text-align: left;
+            }
+        }
+    }
+
+}
 
 // share button
 .share-wrapper {

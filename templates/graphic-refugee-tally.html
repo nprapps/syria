@@ -1,0 +1,41 @@
+<div id="tally" class="graphic">
+    <div class="col">
+        <table class="syria">
+            <caption>{{ COPY.syria_labels.hed_idp }}</caption>
+            {% for data_row in COPY.syria_data %}
+            {% if data_row.type == 'Internally-displaced' %}
+            <tr class="{{ data_row.type|lower|replace(' ', '-') }}">
+                <td>{{ data_row.country }}</td>
+                <td>{{ data_row.amt_fmt }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+
+        <table class="mideast">
+            <caption>{{ COPY.syria_labels.hed_mideast }}</caption>
+            {% for data_row in COPY.syria_data %}
+            {% if data_row.type == 'Total persons of concern' %}
+            <tr class="{{ data_row.type|lower|replace(' ', '-') }}">
+                <td>{{ data_row.country }}</td>
+                <td>{{ data_row.amt_fmt }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+    
+    <div class="col">
+        <table class="europe">
+            <caption>{{ COPY.syria_labels.hed_europe }}</caption>
+            {% for data_row in COPY.syria_data %}
+            {% if data_row.type == 'Asylum applications' and loop.index < 15 %}
+            <tr class="{{ data_row.type|lower|replace(' ', '-') }}">
+                <td>{{ data_row.country }}</td>
+                <td>{{ data_row.amt_fmt }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+</div>
