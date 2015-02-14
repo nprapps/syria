@@ -76,9 +76,10 @@ var onPageLoad = function() {
         'opacity': 1,
         'visibility': 'visible',
     });
+    // Defer lazy loading
     setTimeout(function() {
         setSlidesForLazyLoading(0);
-    }, 10);
+    }, 0);
 };
 
 // after a new slide loads
