@@ -71,11 +71,13 @@ var setUpFullPage = function() {
 };
 
 var onPageLoad = function() {
-    setSlidesForLazyLoading(0);
     $('.section').css({
-      'opacity': 1,
-      'visibility': 'visible',
+        'opacity': 1,
+        'visibility': 'visible',
     });
+    setTimeout(function() {
+        setSlidesForLazyLoading(0);
+    }, 10);
 };
 
 // after a new slide loads
