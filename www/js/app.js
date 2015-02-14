@@ -65,7 +65,7 @@ var setUpFullPage = function() {
         css3: true,
         loopHorizontal: false,
         afterRender: onPageLoad,
-        afterSlideLoad: lazyLoad,
+        afterSlideLoad: trackCompletion,
         onSlideLeave: onSlideLeave
     });
 };
@@ -79,9 +79,7 @@ var onPageLoad = function() {
 };
 
 // after a new slide loads
-var lazyLoad = function(anchorLink, index, slideAnchor, slideIndex) {
-    setSlidesForLazyLoading(slideIndex);
-
+var trackCompletion = function(anchorLink, index, slideAnchor, slideIndex) {
     // Completion tracking
     how_far = (slideIndex + 1) / ($slides.length - APP_CONFIG.NUM_SLIDES_AFTER_CONTENT);
 
@@ -111,6 +109,9 @@ var setSlidesForLazyLoading = function(slideIndex) {
     var slides = [
         $slides.eq(slideIndex),
         $slides.eq(slideIndex + 1),
+        $slides.eq(slideIndex + 2),
+        $slides.eq(slideIndex + 3),
+        $slides.eq(slideIndex + 4),
     ];
 
     for (var i = 0; i < slides.length; i++) {
