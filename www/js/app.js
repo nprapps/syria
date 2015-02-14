@@ -263,11 +263,4 @@ $(document).ready(function() {
     $(window).resize(resize);
 
     $(document).keydown(onDocumentKeyDown);
-
-    var pymParent = new pym.Parent(
-        'responsive-embed-syria-refugees-by-country',
-        'http://apps.npr.org/dailygraphics/graphics/syria-refugees-by-country/child.html',
-        {}
-    );
-
 });
