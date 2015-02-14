@@ -127,17 +127,20 @@ var loadImages = function($slide) {
     var prefix;
     var image_path;
 
-    if ($w < 769) {
-        prefix = 'mobile-';
-    }
 
-    if (!prefix) {
-        prefix = 'desktop-';
-    }
+
     var $images = $slide.find('img');
     for (var i = 0; i < $images.length; i++) {
-        if ($images.eq(i).data('image')) {
-            var image_path = 'assets/img/' + prefix + $images.eq(i).data('image');
+        var $image = $images.eq(i);
+        if ($image.data('image')) {
+
+            if ($w < 769 || $image.parent('.side-by-side').length) {
+                prefix = 'mobile-';
+            } else {
+                prefix = 'desktop-';
+            }
+
+            image_path = 'assets/img/' + prefix + $image.data('image');
             $images.eq(i).attr('src', image_path);
         }
     }
