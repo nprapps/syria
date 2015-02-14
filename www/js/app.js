@@ -44,8 +44,10 @@ var resize = function() {
 
 var resizeTitleCard = function() {
     $start.height($h);
-    var image_path = 'assets/img/' + $start.data('bgimage');
-    $start.css('background-image', 'url(' + image_path + ')');
+    if ($start.css('background-image') == 'none') {
+        var image_path = 'assets/img/' + $start.data('bgimage');
+        $start.css('background-image', 'url(' + image_path + ')');
+    }
 }
 
 var setUpFullPage = function() {
