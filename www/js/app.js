@@ -60,6 +60,7 @@ var setUpFullPage = function() {
         autoScrolling: false,
         keyboardScrolling: false,
         verticalCentered: false,
+        animateAnchor: false,
         fixedElements: '.primary-navigation, #share-modal',
         resize: false,
         css3: true,
@@ -128,20 +129,16 @@ var loadImages = function($slide) {
     */
     var prefix;
     var image_path;
-
-
-
     var $images = $slide.find('img');
+
     for (var i = 0; i < $images.length; i++) {
         var $image = $images.eq(i);
         if ($image.data('image')) {
-
             if ($w < 769 || $image.parent('.side-by-side').length) {
                 prefix = 'mobile-';
             } else {
                 prefix = 'desktop-';
             }
-
             image_path = 'assets/img/' + prefix + $image.data('image');
             $images.eq(i).attr('src', image_path);
         }
@@ -154,8 +151,8 @@ var onSlideLeave = function(anchorLink, index, slideIndex, direction) {
     // Reset scroll
     $slides.eq(slideIndex).scrollTop(0);
 
+    // Log time on slide
     if (lastSlideExitEvent) {
-        // Log time on slide
         ANALYTICS.exitSlide(slideIndex.toString(), lastSlideExitEvent);
     }
 }
