@@ -66,25 +66,36 @@ var setUpFullPage = function() {
         css3: true,
         loopHorizontal: false,
         afterRender: onPageLoad,
-        afterSlideLoad: trackCompletion,
+        afterSlideLoad: afterSlideLoad,
         onSlideLeave: onSlideLeave
     });
 };
 
 var onPageLoad = function() {
-    $('.section').css({
-        'opacity': 1,
-        'visibility': 'visible',
-    });
     // Defer lazy loading
     setTimeout(function() {
         setSlidesForLazyLoading(0);
     }, 0);
 };
 
+var afterSlideLoad = function(anchorLink, index, slideAnchor, slideIndex) {
+    var $activeSlide = $('*[data-anchor="'+ slideAnchor + '"]');
+    $activeSlide.animate({
+        'opacity': 1,
+    }, 1000, function() {
+        $slides.css({
+          'opacity': 1
+        });
+    });
+
+    trackCompletion(slideIndex);
+}
+
 // after a new slide loads
-var trackCompletion = function(anchorLink, index, slideAnchor, slideIndex) {
+var trackCompletion = function(slideIndex) {
     // Completion tracking
+
+
     how_far = (slideIndex + 1) / ($slides.length - APP_CONFIG.NUM_SLIDES_AFTER_CONTENT);
 
     if (how_far >= completion + 0.25) {
