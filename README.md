@@ -15,6 +15,8 @@ syria
 * [Add a page to the site](#add-a-page-to-the-site)
 * [Run the project](#run-the-project)
 * [COPY editing](#copy-editing)
+* [Syria text editing workflow](#syria-text-editing-workflow)
+* [Crunching assets](#crunching-assets)
 * [Arbitrary Google Docs](#arbitrary-google-docs)
 * [Run Python tests](#run-python-tests)
 * [Run Javascript tests](#run-javascript-tests)
@@ -192,6 +194,43 @@ about_url
 download_label
 download_url
 ```
+
+
+Syria text editing workflow
+---------------------------
+
+This project contains an experiment to remove some of the copy editing from the spreadsheet.
+
+Each chapter of the project is managed as a Markdown file in `www/assets` (e.g. `www/assets/greece`).
+
+Single photos or series of photos are managed in the Google sheet named 'photos' and embedded in the
+copy with a simple Jinja token:
+
+```
+Some text...
+
+{{ photos('greece3') }}
+```
+
+
+Crunching assets
+----------------
+
+This project adds a simple new image optimization feature to the app template.
+
+To compress and optimize JPEG image assets in `www/assets/img` run:
+
+```
+fab assets.crunch
+```
+
+If there is a file called `myphoto.jpg`, the optimizer will create
+`desktop-myphoto.jpg` (1140px wide) and `mobile-myphoto.jpg` (768px wide). In turn the image
+loader in `app.js` will pick the optimally sized image for the device and the container the
+image appears in.
+
+To add new image sizes or tweak compression parameters, edit `crunch_images.sh`.
+
 
 Arbitrary Google Docs
 ----------------------
