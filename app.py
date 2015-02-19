@@ -19,6 +19,21 @@ app.add_template_filter(smarty_filter, name='smarty')
 app.add_template_filter(urlencode_filter, name='urlencode')
 app.add_template_filter(markdown_filter, name='markdown')
 
+from authomatic.providers import oauth2
+from authomatic.adapters import WerkzeugAdapter
+from authomatic import Authomatic
+
+CONFIG = {
+    'google': {
+        'class_': oauth2.Google,
+        'consumer_key': '921080749115-81ufuqikpuvikbas04n1jgj4pdqp9ren.apps.googleusercontent.com',
+        'consumer_secret': 'bOtbTuANzYDgubzbJ1rD0tv2',
+        'scope': ['https://www.googleapis.com/auth/drive.readonly']
+    },
+}
+
+authomatic = Authomatic(CONFIG, 'mysecretstring')
+
 
 # Example application views
 @app.route('/')
@@ -33,6 +48,17 @@ def index():
         context['featured'] = json.load(f)
 
     return make_response(render_template('index.html', **context))
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    from flask import request
+    response = make_response()
+    result = authomatic.login(WerkzeugAdapter(request, response), 'google')
+    if result:
+        #import ipdb; ipdb.set_trace();
+        context = make_context()
+        return render_template('login.html', result=result)
+    return response
 
 @app.route('/comments/')
 def comments():
