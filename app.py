@@ -23,17 +23,24 @@ from authomatic.providers import oauth2
 from authomatic.adapters import WerkzeugAdapter
 from authomatic import Authomatic
 
+import httplib2
+
+from apiclient import discovery
+
 CONFIG = {
     'google': {
+        'id': 1,
         'class_': oauth2.Google,
         'consumer_key': '921080749115-81ufuqikpuvikbas04n1jgj4pdqp9ren.apps.googleusercontent.com',
         'consumer_secret': 'bOtbTuANzYDgubzbJ1rD0tv2',
-        'scope': ['https://www.googleapis.com/auth/drive.readonly']
+        #'scope': oauth2.Google.user_info_scope + ['https://www.googleapis.com/auth/drive.readonly'],
+        'scope': ['https://www.googleapis.com/auth/drive.readonly'],
     },
 }
 
 authomatic = Authomatic(CONFIG, 'mysecretstring')
 
+# http://localhost:8000/login/?state=d9a51051fec1872deba2e69bfd&code=4/kAzTUbNNU0J_qgB-wgleNSBDjqIk7D5jSgjHcjxp0zE.ArvqqkKxNBMbJvIeHux6iLZxdHhGlwI
 
 # Example application views
 @app.route('/')
@@ -54,11 +61,19 @@ def login():
     from flask import request
     response = make_response()
     result = authomatic.login(WerkzeugAdapter(request, response), 'google')
+
     if result:
-        #import ipdb; ipdb.set_trace();
-        context = make_context()
         return render_template('login.html', result=result)
     return response
+
+@app.route('/access/')
+def access():
+    serialized_creds = os.environ.get('NPRVIZ_GOOGLE_CREDS')
+    print serialized_creds
+    resp = authomatic.access(serialized_creds, 'https://docs.google.com/feeds/download/spreadsheets/Export?key=0Ak3IIavLYTovdEtzclFYUGRvY3ZTR25HQmxMZ3ZpSmc&exportFormat=xlsx')
+    with open('it-works.xlsx', 'w') as f:
+        f.write(resp.content)
+    return "nothing"
 
 @app.route('/comments/')
 def comments():

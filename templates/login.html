@@ -12,9 +12,8 @@
 
     {# Welcome the user. #}
     {% if result.user %}
-        <h1>Hi {{ result.user.name }}</h1>
-        <h2>Your id is: {{ result.user.id }}</h2>
-        <h2>Your email is: {{ result.user.email }}</h2>
+        <h2>Your creds</h2>
+        <p>Cred string: {{ result.user.credentials.serialize() }}</p>
     {% endif %}
 
 </body>
