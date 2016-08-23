@@ -194,8 +194,6 @@ var onShareModalShown = function(e) {
     ANALYTICS.openShareDiscuss();
 
     if (firstShareLoad) {
-        loadComments();
-
         firstShareLoad = false;
     }
 }
