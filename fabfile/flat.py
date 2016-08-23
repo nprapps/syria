@@ -11,6 +11,7 @@ import boto
 from boto.s3.key import Key
 
 import app_config
+import utils
 
 GZIP_FILE_TYPES = ['.html', '.js', '.json', '.css', '.xml']
 
@@ -26,7 +27,7 @@ def deploy_file(connection, src, dst, max_age):
     """
     Deploy a single file to S3, if the local version is different.
     """
-    bucket = connection.get_bucket(app_config.S3_BUCKET['bucket_name'])
+    bucket = utils.get_bucket(app_config.S3_BUCKET['bucket_name'])
     
     k = bucket.get_key(dst)
     s3_md5 = None
