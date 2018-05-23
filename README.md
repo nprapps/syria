@@ -139,6 +139,8 @@ Visit [localhost:8000](http://localhost:8000) in your browser.
 COPY editing
 ------------
 
+**IMPORTANT NOTE: This project relies on an outdated method to access content Google Spreadsheets. For now, the connection has been disabled ([in this commit](https://github.com/nprapps/syria/commit/b9f3b12fbb02a5e01edfc35399e91fed46a14a20)), and the project instead pulls from a spreadsheet stored in `www/assets/copy.xlsx`. Run `fab assets.sync` to download this file (and other media files) from the [assets rig](#save-media-assets).**
+
 This app uses a Google Spreadsheet for a simple key/value store that provides an editing workflow.
 
 View the [sample copy spreadsheet](https://docs.google.com/spreadsheet/pub?key=0AlXMOHKxzQVRdHZuX1UycXplRlBfLVB0UVNldHJYZmc#gid=0).
@@ -157,7 +159,7 @@ The app template is outfitted with a few ``fab`` utility functions that make pul
 To update the latest document, simply run:
 
 ```
-fab text.update 
+fab text.update
 ```
 
 Note: ``text.update`` runs automatically whenever ``fab render`` is called.
@@ -352,7 +354,7 @@ Install cron jobs
 Cron jobs are defined in the file `crontab`. Each task should use the `cron.sh` shim to ensure the project's virtualenv is properly activated prior to execution. For example:
 
 ```
-* * * * * ubuntu bash /home/ubuntu/apps/syria/repository/cron.sh fab $DEPLOYMENT_TARGET cron_jobs.test 
+* * * * * ubuntu bash /home/ubuntu/apps/syria/repository/cron.sh fab $DEPLOYMENT_TARGET cron_jobs.test
 ```
 
 To install your crontab set `INSTALL_CRONTAB` to `True` in `app_config.py`. Cron jobs will be automatically installed each time you deploy to EC2.
@@ -405,4 +407,3 @@ The Google Analytics events tracked in this application are:
 |syria|summary-copied||||
 |syria|featured-tweet-action|`action`||``tweet_url``|
 |syria|featured-facebook-action|`action`||``post_url``|
-
